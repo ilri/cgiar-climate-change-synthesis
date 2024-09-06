@@ -106,6 +106,13 @@ with open("/tmp/ifpri.csv", "w") as f:
         # All items should have titles right?
         item_title = clean_string(record["title"])
 
+        # Opportunistically concatenate title and subtitle fields
+        if isinstance(record["subtit"], str):
+            item_subtitle = clean_string(record["subtit"])
+
+            if item_subtitle not in item_title:
+                item_title = f"{item_title}: {item_subtitle}"
+
         item_authors = record["creato"]
 
         if isinstance(record["fundin"], str):

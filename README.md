@@ -39,7 +39,6 @@ CGIAR institutional repositories used in this dataset (sorted by total number of
 ## TODO
 
 - align with Rayyan column headers
-- combine IFPRI title and subtitle?
 
 
 ## License
