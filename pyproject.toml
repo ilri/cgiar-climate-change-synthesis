@@ -1,0 +1,47 @@
+[project]
+name = "cgiar-climate-change-synthesis"
+version = "0.0.1"
+description = "Code to generate the data used for the 2024 CGIAR Climate Change Synthesis dataset."
+authors = [
+    { name = "Alan Orth", email = "git@mjanja.mozmail.com" }
+]
+license= { file = "LICENSE.txt" }
+
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "csvkit~=2.0.1",
+    "dspace-rest-client~=0.1.0",
+    "packaging>=24.1",
+    "pandas[feather,performance]~=2.2",
+    "requests-cache~=1.2.1",
+    "tqdm~=4.66.0",
+]
+
+# See: https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#classifiers
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+  "Natural Language :: English",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+]
+
+[project.urls]
+repository = "https://github.com/ilri/cgiar-climate-change-synthesis"
+homepage = "https://github.com/ilri/cgiar-climate-change-synthesis"
+
+[tool.uv]
+dev-dependencies = [
+    "ipython~=8.18.1",
+    "isort~=5.13.2",
+    "black~=24.8.0",
+]
+
+[tool.isort]
+profile = "black"
+line_length=88

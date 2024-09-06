@@ -1,0 +1,9 @@
+data/pdf
+
+*.egg-info
+
+requests-cache.sqlite
+
+src/__pycache__
+
+.venv
