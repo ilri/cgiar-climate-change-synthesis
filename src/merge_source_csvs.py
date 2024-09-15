@@ -121,6 +121,7 @@ df_irri = pd.read_csv(
         "other authors",
         "publisher",
         "journal",
+        "issn",
         "date issued",
         "extent",
         "abstract",
@@ -263,6 +264,7 @@ df_irri = df_irri.rename(
         "doi": "DOI",
         "date issued": "Publication date",
         "journal": "Journal",
+        "issn": "ISSN",
         "publisher": "Publisher",
         "subjects": "Subjects",
         "extent": "Pages",  # IRRI doesn't separate the pages
@@ -401,6 +403,7 @@ df_final = df_final.filter(
         "Repository link",
         "Publication date",
         "Journal",
+        "ISSN",
         "Publisher",
         "Pages",
         "Access rights",
