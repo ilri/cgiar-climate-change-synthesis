@@ -69,7 +69,10 @@ fieldnames = [
     "Publication date",
     "Publication date (Online)",
     "Journal",
+    "ISSN",
     "Publisher",
+    "Volume",
+    "Issue",
     "Pages",
     "Subjects",
 ]
@@ -152,9 +155,24 @@ with open("/tmp/melspace.csv", "w") as f:
             item_journal = ""
 
         try:
+            item_issn = item["metadata"]["cg.issn"][0]["value"]
+        except KeyError:
+            item_issn = ""
+
+        try:
             item_publisher = item["metadata"]["dc.publisher"][0]["value"]
         except KeyError:
             item_publisher = ""
+
+        try:
+            item_volume = item["metadata"]["cg.volume"][0]["value"]
+        except KeyError:
+            item_volume = ""
+
+        try:
+            item_issue = item["metadata"]["cg.issue"][0]["value"]
+        except KeyError:
+            item_issue = ""
 
         try:
             item_extent = item["metadata"]["dcterms.extent"][0]["value"]
@@ -196,7 +214,10 @@ with open("/tmp/melspace.csv", "w") as f:
                 "Publication date": item_date_issued,
                 "Publication date (Online)": item_date_online,
                 "Journal": item_journal,
+                "ISSN": item_issn,
                 "Publisher": item_publisher,
+                "Volume": item_volume,
+                "Issue": item_issue,
                 "Pages": item_extent,
                 "Funder": "; ".join(item_funders),
                 "Subjects": "; ".join(item_subjects),
