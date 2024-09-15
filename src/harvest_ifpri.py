@@ -75,7 +75,7 @@ fieldnames = [
     "Title",
     "Authors",
     "Abstract",
-    "Funder",
+    "Funders",
     "Language",
     "DOI",
     "Access rights",
@@ -203,7 +203,7 @@ with open("/tmp/ifpri.csv", "w") as f:
                 "ISSN": item_issn,
                 "Publisher": item_publisher,
                 "Pages": item_extent,
-                "Funder": item_funders,
+                "Funders": item_funders,
                 "Subjects": item_subjects.rstrip("; ").lower(),
                 "Type": item_type,
             }

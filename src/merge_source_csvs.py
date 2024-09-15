@@ -100,6 +100,7 @@ df_ifpri = pd.read_csv(
         "Pages",
         "Publisher",
         "Abstract",
+        "Funders",
         "ISSN",
         "DOI",
         "Subjects",

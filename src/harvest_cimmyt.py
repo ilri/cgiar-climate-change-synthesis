@@ -60,7 +60,7 @@ fieldnames = [
     "Title",
     "Authors",
     "Abstract",
-    "Funder",
+    "Funders",
     "Language",
     "DOI",
     "Repository link",
@@ -187,7 +187,7 @@ with open("/tmp/cimmyt.csv", "w") as f:
                 "Journal": item_journal,
                 "Publisher": item_publisher,
                 "Pages": item_extent,
-                "Funder": "; ".join(item_funders),
+                "Funders": "; ".join(item_funders),
                 "Subjects": "; ".join(item_subjects),
             }
         )

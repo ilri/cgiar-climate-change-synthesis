@@ -66,7 +66,7 @@ fieldnames = [
     "Authors",
     "Author affiliations",
     "Abstract",
-    "Funder",
+    "Funders",
     "Language",
     "DOI",
     "Access rights",
@@ -210,7 +210,7 @@ with open("/tmp/cgspace.csv", "w") as f:
                 "Volume": item_volume,
                 "Issue": item_issue,
                 "Pages": item_extent,
-                "Funder": "; ".join(item_funders),
+                "Funders": "; ".join(item_funders),
                 "Subjects": "; ".join(item_subjects),
             }
         )
