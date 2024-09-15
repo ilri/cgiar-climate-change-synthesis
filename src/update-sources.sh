@@ -54,7 +54,7 @@ csvgrep -c dc.date.issued -r '^(201[2-9]|202[0-3])' -a /tmp/worldfish.csv \
 
 echo "Updating CIFOR"
 
-./src/harvest_dspace.py -r https://data.cifor.org/dspace -f dc.title,dc.contributor.author,dc.type,dc.date.issued,dc.identifier.uri,dc.identifier.doi,dc.subject,cg.subject.cifor,cg.contributor.affiliation,cg.contributor.center,cg.contributor.funder,cg.coverage.region,cg.coverage.country,cifor.publication.status,dc.type.refereed,dc.description.abstract,cifor.source.title,dc.publisher,dc.type.isi,dc.language,dc.language.iso,cifor.type.oa,dc.rights,dc.format.extent,cifor.source.page -o /tmp/cifor.csv > /dev/null
+./src/harvest_dspace.py -r https://data.cifor.org/dspace -f dc.title,dc.contributor.author,dc.type,dc.date.issued,dc.identifier.uri,dc.identifier.doi,dc.subject,cg.subject.cifor,cg.contributor.affiliation,cg.contributor.center,cg.contributor.donor,cg.coverage.region,cg.coverage.country,cifor.publication.status,dc.type.refereed,dc.description.abstract,cifor.source.title,dc.identifier.issn,cifor.source.volume,cifor.source.numbers,dc.publisher,dc.type.isi,dc.language,dc.language.iso,cifor.type.oa,dc.rights,dc.format.extent,cifor.source.page -o /tmp/cifor.csv > /dev/null
 
 csvgrep -c dc.date.issued -r '^(201[2-9]|202[0-3])' /tmp/cifor.csv \
     | csvgrep -c dc.type -m 'Journal Article' \
