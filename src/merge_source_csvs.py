@@ -392,6 +392,14 @@ df_final["DOI"] = df_final["DOI"].str.replace(
 # row instead of each column, so we can compare the item's dates.
 df_final["Publication date"] = df_final.apply(get_publication_date, axis=1)
 
+# Align headers with Rayyan
+df_final = df_final.rename(
+    columns={
+        "Publication date": "Year",
+        "Subjects": "Keywords",
+    }
+)
+
 # Keep only the columns we want
 df_final = df_final.filter(
     items=[
@@ -402,7 +410,7 @@ df_final = df_final.filter(
         "Funders",
         "DOI",
         "Repository link",
-        "Publication date",
+        "Year",
         "Journal",
         "ISSN",
         "Publisher",
@@ -412,7 +420,7 @@ df_final = df_final.filter(
         "Access rights",
         "Usage rights",
         "PDF",
-        "Subjects",
+        "Keywords",
         "Source",
     ]
 )
