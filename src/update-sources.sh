@@ -25,7 +25,7 @@ set -o errexit
 
 echo "Updating CGSpace"
 
-./scripts/harvest_cgspace.py
+./src/harvest_cgspace.py
 
 # Only need to filter for climate change here since our DSpace 7 harvesting
 # script did some pre-processing.
@@ -35,7 +35,7 @@ csvgrep -c "Title,Subjects,Abstract" -r '[Cc]limate [Cc]hange' -a /tmp/cgspace.c
 
 echo "Updating MELSpace"
 
-./scripts/harvest_melspace.py
+./src/harvest_melspace.py
 
 csvgrep -c "Title,Subjects,Abstract" -r '[Cc]limate [Cc]hange' -a /tmp/melspace.csv \
     | tee data/melspace-filtered.csv \
@@ -43,7 +43,7 @@ csvgrep -c "Title,Subjects,Abstract" -r '[Cc]limate [Cc]hange' -a /tmp/melspace.
 
 echo "Updating WorldFish"
 
-./scripts/harvest_dspace.py -r https://digitalarchive.worldfishcenter.org -f dc.title,dc.creator,cg.contributor.affiliation,dc.description.abstract,dc.date.issued,dc.subject,cg.subject.agrovoc,dc.identifier.uri,dc.identifier.doi,cg.identifier.status,dc.rights,cg.coverage.country,cg.coverage.region,dc.language,dc.source,dc.publisher,cg.contributor.funder,dc.type -o /tmp/worldfish.csv > /dev/null
+./src/harvest_dspace.py -r https://digitalarchive.worldfishcenter.org -f dc.title,dc.creator,cg.contributor.affiliation,dc.description.abstract,dc.date.issued,dc.subject,cg.subject.agrovoc,dc.identifier.uri,dc.identifier.doi,cg.identifier.status,dc.rights,cg.coverage.country,cg.coverage.region,dc.language,dc.source,dc.publisher,cg.contributor.funder,dc.type -o /tmp/worldfish.csv > /dev/null
 
 csvgrep -c dc.date.issued -r '^(201[2-9]|202[0-3])' -a /tmp/worldfish.csv \
     | csvgrep -c dc.type -m 'Journal Article' \
@@ -54,7 +54,7 @@ csvgrep -c dc.date.issued -r '^(201[2-9]|202[0-3])' -a /tmp/worldfish.csv \
 
 echo "Updating CIFOR"
 
-./scripts/harvest_dspace.py -r https://data.cifor.org/dspace -f dc.title,dc.contributor.author,dc.type,dc.date.issued,dc.identifier.uri,dc.identifier.doi,dc.subject,cg.subject.cifor,cg.contributor.affiliation,cg.contributor.center,cg.contributor.funder,cg.coverage.region,cg.coverage.country,cifor.publication.status,dc.type.refereed,dc.description.abstract,cifor.source.title,dc.publisher,dc.type.isi,dc.language,dc.language.iso,cifor.type.oa,dc.rights,dc.format.extent,cifor.source.page -o /tmp/cifor.csv > /dev/null
+./src/harvest_dspace.py -r https://data.cifor.org/dspace -f dc.title,dc.contributor.author,dc.type,dc.date.issued,dc.identifier.uri,dc.identifier.doi,dc.subject,cg.subject.cifor,cg.contributor.affiliation,cg.contributor.center,cg.contributor.funder,cg.coverage.region,cg.coverage.country,cifor.publication.status,dc.type.refereed,dc.description.abstract,cifor.source.title,dc.publisher,dc.type.isi,dc.language,dc.language.iso,cifor.type.oa,dc.rights,dc.format.extent,cifor.source.page -o /tmp/cifor.csv > /dev/null
 
 csvgrep -c dc.date.issued -r '^(201[2-9]|202[0-3])' /tmp/cifor.csv \
     | csvgrep -c dc.type -m 'Journal Article' \
@@ -65,7 +65,7 @@ csvgrep -c dc.date.issued -r '^(201[2-9]|202[0-3])' /tmp/cifor.csv \
 
 echo "Updating CIMMYT"
 
-./scripts/harvest_cimmyt.py
+./src/harvest_cimmyt.py
 
 # Only need to filter for climate change here since our DSpace 7 harvesting
 # script did some pre-processing.
@@ -80,11 +80,11 @@ echo "Updating ICRISAT"
 
 curl -s 'https://oar.icrisat.org/cgi/search/archive/advanced/export_icrisat_JSON.js?dataset=archive&screen=Search&_action_export=1&output=JSON&exp=0%7C1%7C-date%2Fcreators_name%2Ftitle%7Carchive%7C-%7Cdate%3Adate%3AALL%3AEQ%3A2012-2023%7Ctype%3Atype%3AANY%3AEQ%3Aarticle%7C-%7Ceprint_status%3Aeprint_status%3AANY%3AEQ%3Aarchive%7Cmetadata_visibility%3Ametadata_visibility%3AANY%3AEQ%3Ashow&n=&cache=742348' -o /tmp/icrisat.json
 
-./scripts/icrisat_json_to_csv.py
+./src/icrisat_json_to_csv.py
 
 echo "Updating IFPRI"
 
-./scripts/harvest_ifpri.py
+./src/harvest_ifpri.py
 
 csvgrep -c "Publication date" -r '^(201[2-9]|202[0-3])' -a /tmp/ifpri.csv \
     | csvgrep -c Type -m 'Journal article' \
