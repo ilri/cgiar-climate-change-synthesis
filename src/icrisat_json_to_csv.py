@@ -109,6 +109,16 @@ def export_row(row):
     except KeyError:
         publisher = None
 
+    try:
+        volume = row["volume"]
+    except KeyError:
+        volume = None
+
+    try:
+        issue = row["number"]
+    except KeyError:
+        issue = None
+
     # Extract keywords as subjects for now. In EPrints they are apparently one
     # long string, and I see a lot of "\r\n" and whitespace in them so we need
     # to split and clean them.
@@ -151,6 +161,8 @@ def export_row(row):
             "Journal": publication,
             "ISSN": issn,
             "Publisher": publisher,
+            "Volume": volume,
+            "Issue": issue,
             "Subjects": "; ".join(subjects),
             "Funders": "; ".join(funders),
             "Pages": extent,
@@ -180,6 +192,8 @@ fieldnames = [
     "Journal",
     "ISSN",
     "Publisher",
+    "Volume",
+    "Issue",
     "Subjects",
     "Funders",
     "Pages",
