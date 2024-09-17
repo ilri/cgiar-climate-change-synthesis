@@ -43,7 +43,7 @@ csvgrep -c "Title,Subjects,Abstract" -r '[Cc]limate [Cc]hange' -a /tmp/melspace.
 
 echo "Updating WorldFish"
 
-./src/harvest_dspace.py -r https://digitalarchive.worldfishcenter.org -f dc.title,dc.creator,cg.contributor.affiliation,dc.description.abstract,dc.date.issued,dc.subject,cg.subject.agrovoc,dc.identifier.uri,dc.identifier.doi,cg.identifier.status,dc.rights,cg.coverage.country,cg.coverage.region,dc.language,dc.source,dc.publisher,cg.contributor.funder,dc.type -o /tmp/worldfish.csv > /dev/null
+./src/harvest_dspace.py -r https://digitalarchive.worldfishcenter.org -f dc.title,dc.creator,cg.contributor.affiliation,dc.description.abstract,dc.date.issued,dc.subject,cg.subject.agrovoc,dc.identifier.uri,dc.identifier.doi,cg.identifier.status,dc.rights,cg.coverage.country,cg.coverage.region,dc.language,dc.source,dc.identifier.issn,dc.publisher,cg.contributor.funder,dc.type -o /tmp/worldfish.csv > /dev/null
 
 csvgrep -c dc.date.issued -r '^(201[2-9]|202[0-3])' -a /tmp/worldfish.csv \
     | csvgrep -c dc.type -m 'Journal Article' \

@@ -60,6 +60,7 @@ df_worldfish = pd.read_csv(
         "cg.identifier.status",
         "dc.rights",
         "dc.source",
+        "dc.identifier.issn",
         "dc.publisher",
     ],
     dtype_backend="pyarrow",
@@ -181,6 +182,7 @@ df_worldfish = df_worldfish.rename(
         "dc.identifier.uri": "Repository link",
         "dc.date.issued": "Publication date",
         "dc.source": "Journal",
+        "dc.identifier.issn": "ISSN",
         "dc.publisher": "Publisher",
     }
 )
