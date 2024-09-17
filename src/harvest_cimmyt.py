@@ -66,6 +66,7 @@ fieldnames = [
     "Repository link",
     "Publication date",
     "Journal",
+    "ISSN",
     "Publisher",
     "Pages",
     "Subjects",
@@ -135,6 +136,11 @@ with open("/tmp/cimmyt.csv", "w") as f:
             item_journal = ""
 
         try:
+            item_issn = item["metadata"]["dc.source.issn"][0]["value"]
+        except KeyError:
+            item_issn = ""
+
+        try:
             item_publisher = item["metadata"]["dc.publisher"][0]["value"]
         except KeyError:
             try:
@@ -185,6 +191,7 @@ with open("/tmp/cimmyt.csv", "w") as f:
                 "Repository link": item_handle,
                 "Publication date": item_date_issued,
                 "Journal": item_journal,
+                "ISSN": item_issn,
                 "Publisher": item_publisher,
                 "Pages": item_extent,
                 "Funders": "; ".join(item_funders),
