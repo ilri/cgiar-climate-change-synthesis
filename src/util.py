@@ -143,7 +143,7 @@ def get_license(doi: str):
 
     # Infer copyright for some big publishers. By inspection, this is going to
     # be correct for the majority, but will be incorrect for some corner cases.
-    if not pd.isna(license):
+    if pd.notna(license):
         license = license.replace(
             "https://www.elsevier.com/tdm/userlicense/1.0/",
             "Copyrighted; all rights reserved",
@@ -172,7 +172,7 @@ def get_license(doi: str):
 
     # Reset some licenses back to pd.NA since we can't determine, and hopefully
     # we can fill in the missing information from repository metadata.
-    if not pd.isna(license) and "http" in license:
+    if pd.notna(license) and "http" in license:
         license = pd.NA
 
     return license
