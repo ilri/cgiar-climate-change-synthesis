@@ -344,8 +344,6 @@ logger.info(f"Removed {total_number_records - df_final.shape[0]} duplicate DOIs"
 # Check how many rows we have total before deduplicating titles
 total_number_records = df_final.shape[0]
 
-df_final["PDF"] = df_final["DOI"].apply(pdf_exists)
-
 # Remove duplicates using the title as the unique identifier. This is just in
 # case there are duplicate titles, as sometimes the same DOI can have a typo
 # or differ in case, etc.
@@ -396,6 +394,9 @@ df_final["DOI"].to_csv("/tmp/dois.txt", header=False, index=False)
 df_final["DOI"] = df_final["DOI"].str.replace(
     r"^10\.", "https://doi.org/10.", regex=True
 )
+
+# After dropping items without DOIs, check if we have the PDF
+df_final["PDF"] = df_final["DOI"].apply(pdf_exists)
 
 # Determine the publication date by getting the earlier of the issue date and
 # the online date. The `axis=1` means we want to apply this function on each
