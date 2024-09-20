@@ -7,9 +7,9 @@ Code used to generate the dataset for the 2024 Synthesis of CGIAR work on climat
 
 Search CGIAR institutional repositories to find items matching the following criteria:
 
-- Issue date: 2012 to 2023
-- Output type: Journal Article
-- Language: English
+- **Issue date:** 2012 to 2023
+- **Output type:** Journal Article
+- **Language:** English
 - The words "climate change" in the title, subjects, or abstract
 
 Repository APIs were used to perform initial searches. Due to limitations in some APIs, further filtering was carried out to ensure items matched the basic inclusion criteria. See `src/update-sources.sh`.
