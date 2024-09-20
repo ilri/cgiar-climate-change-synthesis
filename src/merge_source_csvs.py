@@ -389,14 +389,14 @@ df_final = df_final[df_final["DOI"].str.startswith("10.", na=False)]
 # Write all DOIs to text for debugging
 df_final["DOI"].to_csv("/tmp/dois.txt", header=False, index=False)
 
+# After dropping items without DOIs, check if we have the PDF
+df_final["PDF"] = df_final["DOI"].apply(pdf_exists)
+
 # After normalizing to a simpler form and dropping duplicates, convert the DOIs
 # back to URIs so they are easier to click in Excel or whatever
 df_final["DOI"] = df_final["DOI"].str.replace(
     r"^10\.", "https://doi.org/10.", regex=True
 )
-
-# After dropping items without DOIs, check if we have the PDF
-df_final["PDF"] = df_final["DOI"].apply(pdf_exists)
 
 # Determine the publication date by getting the earlier of the issue date and
 # the online date. The `axis=1` means we want to apply this function on each
