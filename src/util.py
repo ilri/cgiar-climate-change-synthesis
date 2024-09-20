@@ -32,8 +32,7 @@ session.cache.delete(expired=True)
 
 
 def get_access_rights(doi: str):
-    # Default to None so we can use Pandas isna etc
-    access_rights = None
+    access_rights = pd.NA
 
     if pd.isna(doi):
         return access_rights
@@ -76,7 +75,7 @@ def get_access_rights(doi: str):
 
 
 def get_license(doi: str):
-    license = None
+    license = pd.NA
 
     if pd.isna(doi):
         return license
@@ -144,7 +143,7 @@ def get_license(doi: str):
 
     # Infer copyright for some big publishers. By inspection, this is going to
     # be correct for the majority, but will be incorrect for some corner cases.
-    if license:
+    if not pd.isna(license):
         license = license.replace(
             "https://www.elsevier.com/tdm/userlicense/1.0/",
             "Copyrighted; all rights reserved",
@@ -171,17 +170,17 @@ def get_license(doi: str):
             "https://www.cambridge.org/core/terms", "Copyrighted; all rights reserved"
         )
 
-    # Reset some licenses back to None since we can't determine, and hopefully
+    # Reset some licenses back to pd.NA since we can't determine, and hopefully
     # we can fill in the missing information from repository metadata.
-    if license and "http" in license:
-        license = None
+    if not pd.isna(license) and "http" in license:
+        license = pd.NA
 
     return license
 
 
 def pdf_exists(doi: str):
     if pd.isna(doi):
-        return None
+        return pd.NA
 
     doi_pdf_file = f'{doi.replace("/", "-")}.pdf'
     pdf_path = f"data/pdf/{doi_pdf_file}"
@@ -190,7 +189,7 @@ def pdf_exists(doi: str):
     if os.path.isfile(pdf_path):
         return doi_pdf_file
     else:
-        return None
+        return pd.NA
 
 
 # Try to see which DSpace version this is
@@ -244,7 +243,7 @@ def detect_dspace_version(dspace_root: str) -> str:
 # is guaranteed to be unique in Python and should preserve the order as well.
 def deduplicate_subjects(subjects: str) -> str:
     if pd.isna(subjects):
-        return None
+        return pd.NA
 
     seen = set()
     deduped_list = [
@@ -325,7 +324,7 @@ def normalize_doi(doi):
     """
 
     if pd.isna(doi):
-        return None
+        return pd.NA
 
     # normalize DOIs like doi:10.1088/1748-9326/ac413a
     doi = doi.replace("doi:", "")
