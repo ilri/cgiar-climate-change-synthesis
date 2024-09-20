@@ -440,15 +440,9 @@ df_final = df_final.filter(
 logger.info(f"Writing {df_final.shape[0]} records to /tmp/output.csv")
 df_final.to_csv("/tmp/output.csv", index=False)
 
-df_final_missing_pdfs = df_final[
-    df_final["PDF"].isna()
-]
-logger.info(
-    f"Writing {df_final.shape[0]} records to /tmp/output-missing-pdfs.csv"
-)
-df_final_missing_pdfs.to_csv(
-    "/tmp/output-missing-pdfs.csv", index=False
-)
+df_final_missing_pdfs = df_final[df_final["PDF"].isna()]
+logger.info(f"Writing {df_final.shape[0]} records to /tmp/output-missing-pdfs.csv")
+df_final_missing_pdfs.to_csv("/tmp/output-missing-pdfs.csv", index=False)
 # Temp: write CSV with papers published by MDPI and Frontiers (using DOI
 # prefixes instead of publisher names because those are free text and can
 # even be wrong on Crossref!
@@ -459,7 +453,11 @@ df_final_missing_pdfs.to_csv(
 #
 # For example: http://api.crossref.org/works/https://doi.org/10.1186/s13570-023-00277-5
 df_final_mdpi_frontiers = df_final[
-    df_final["DOI"].str.contains(r"doi.org\/10\.(3390|20944|3389)\/", regex=True, na=False)
+    df_final["DOI"].str.contains(
+        r"doi.org\/10\.(3390|20944|3389)\/", regex=True, na=False
+    )
 ]
-logger.info(f"Writing {df_final_mdpi_frontiers.shape[0]} records to /tmp/output-mdpi-frontiers.csv")
+logger.info(
+    f"Writing {df_final_mdpi_frontiers.shape[0]} records to /tmp/output-mdpi-frontiers.csv"
+)
 df_final_mdpi_frontiers.to_csv("/tmp/output-mdpi-frontiers.csv", index=False)
