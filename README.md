@@ -36,10 +36,6 @@ CGIAR institutional repositories used in this dataset (sorted by total number of
 - Python >= 3.9
 - UNIX-like operating system
 
-## TODO
-
-- align with Rayyan column headers
-
 
 ## License
 This work is licensed under the [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html).
