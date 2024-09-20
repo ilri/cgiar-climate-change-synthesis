@@ -443,6 +443,7 @@ df_final.to_csv("/tmp/output.csv", index=False)
 df_final_missing_pdfs = df_final[df_final["PDF"].isna()]
 logger.info(f"Writing {df_final.shape[0]} records to /tmp/output-missing-pdfs.csv")
 df_final_missing_pdfs.to_csv("/tmp/output-missing-pdfs.csv", index=False)
+
 # Temp: write CSV with papers published by MDPI and Frontiers (using DOI
 # prefixes instead of publisher names because those are free text and can
 # even be wrong on Crossref!
