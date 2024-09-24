@@ -364,8 +364,8 @@ df_final["Subjects"] = df_final["Subjects"].str.lower()
 # Deduplicate subjects since we've merged various keyword and subject fields
 df_final["Subjects"] = df_final["Subjects"].apply(deduplicate_subjects)
 
-# Filter out some DOIs that we exclude from the set (for example preprints,
-# book chapters, etc).
+# Filter out some DOIs that we exclude from the set. For example preprints,
+# book chapters, etc that have been miscataloged in a CGIAR repository).
 df_dois_to_remove = pd.read_csv("data/dois-to-remove.csv")
 df_final = df_final[~df_final["DOI"].isin(df_dois_to_remove["doi"])]
 
