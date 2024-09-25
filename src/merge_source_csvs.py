@@ -443,7 +443,7 @@ df_final_rayyan = df_final[df_final["DOI"].isin(df_dois_rayyan["doi"])]
 logger.info(
     f"Writing {df_final_rayyan.shape[0]} records to /tmp/output-used-in-review.csv"
 )
-df_final_rayyan.to_csv("/tmp/output-used-in-review.csv")
+df_final_rayyan.to_csv("/tmp/output-used-in-review.csv", index=False)
 
 # Write to a CSV without an index column
 logger.info(f"Writing {df_final.shape[0]} records to /tmp/output.csv")
