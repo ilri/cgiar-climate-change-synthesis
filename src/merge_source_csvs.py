@@ -392,12 +392,6 @@ df_final["DOI"].to_csv("/tmp/dois.txt", header=False, index=False)
 # After dropping items without DOIs, check if we have the PDF
 df_final["PDF"] = df_final["DOI"].apply(pdf_exists)
 
-# After normalizing to a simpler form and dropping duplicates, convert the DOIs
-# back to URIs so they are easier to click in Excel or whatever
-df_final["DOI"] = df_final["DOI"].str.replace(
-    r"^10\.", "https://doi.org/10.", regex=True
-)
-
 # Determine the publication date by getting the earlier of the issue date and
 # the online date. The `axis=1` means we want to apply this function on each
 # row instead of each column, so we can compare the item's dates.
@@ -435,6 +429,21 @@ df_final = df_final.filter(
         "Source",
     ]
 )
+
+# After normalizing to a simpler form and dropping duplicates, convert the DOIs
+# back to URIs so they are easier to click in Excel or whatever
+df_final["DOI"] = df_final["DOI"].str.replace(
+    r"^10\.", "https://doi.org/10.", regex=True
+)
+
+# Import list of DOIs that were included in the review via Rayyan. Note that the
+# DOIs here are in URI format so we don't have to convert them in a separate df.
+df_dois_rayyan = pd.read_csv("data/included-in-review.csv")
+df_final_rayyan = df_final[df_final["DOI"].isin(df_dois_rayyan["doi"])]
+logger.info(
+    f"Writing {df_final_rayyan.shape[0]} records to /tmp/output-used-in-review.csv"
+)
+df_final_rayyan.to_csv("/tmp/output-used-in-review.csv")
 
 # Write to a CSV without an index column
 logger.info(f"Writing {df_final.shape[0]} records to /tmp/output.csv")
