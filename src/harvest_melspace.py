@@ -17,7 +17,7 @@ logger.setLevel(logging.INFO)
 logging.basicConfig(format="%(message)s")
 
 session = CachedSession(
-    "requests-cache", expire_after=timedelta(days=30), allowable_codes=(200, 404)
+    "harvest-cache", expire_after=timedelta(days=30), allowable_codes=(200, 404)
 )
 
 # prune old cache entries

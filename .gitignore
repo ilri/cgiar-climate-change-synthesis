@@ -2,7 +2,7 @@ data/pdf
 
 *.egg-info
 
-requests-cache.sqlite
+*.sqlite
 
 src/__pycache__
 

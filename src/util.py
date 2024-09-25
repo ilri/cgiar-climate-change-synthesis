@@ -25,7 +25,7 @@ from requests_cache import CachedSession
 logger = logging.getLogger(__name__)
 
 session = CachedSession(
-    "requests-cache", expire_after=timedelta(days=30), allowable_codes=(200, 404)
+    "util-cache", expire_after=timedelta(days=30), allowable_codes=(200, 404)
 )
 # prune old cache entries
 session.cache.delete(expired=True)
