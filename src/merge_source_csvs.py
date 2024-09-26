@@ -450,5 +450,7 @@ logger.info(f"Writing {df_final.shape[0]} records to /tmp/output.csv")
 df_final.to_csv("/tmp/output.csv", index=False)
 
 df_final_missing_pdfs = df_final[df_final["PDF"].isna()]
-logger.info(f"Writing {df_final_missing_pdfs.shape[0]} records to /tmp/output-missing-pdfs.csv")
+logger.info(
+    f"Writing {df_final_missing_pdfs.shape[0]} records to /tmp/output-missing-pdfs.csv"
+)
 df_final_missing_pdfs.to_csv("/tmp/output-missing-pdfs.csv", index=False)
