@@ -438,12 +438,12 @@ df_final["DOI"] = df_final["DOI"].str.replace(
 
 # Import list of DOIs that were included in the review via Rayyan. Note that the
 # DOIs here are in URI format so we don't have to convert them in a separate df.
-df_dois_rayyan = pd.read_csv("data/included-in-review.csv")
-df_final_rayyan = df_final[df_final["DOI"].isin(df_dois_rayyan["doi"])]
+df_dois_in_review = pd.read_csv("data/included-in-review.csv")
+df_final_in_review = df_final[df_final["DOI"].isin(df_dois_in_review["doi"])]
 logger.info(
-    f"Writing {df_final_rayyan.shape[0]} records to /tmp/output-used-in-review.csv"
+    f"Writing {df_final_in_review.shape[0]} records to /tmp/output-used-in-review.csv"
 )
-df_final_rayyan.to_csv("/tmp/output-used-in-review.csv", index=False)
+df_final_in_review.to_csv("/tmp/output-used-in-review.csv", index=False)
 
 # Write to a CSV without an index column
 logger.info(f"Writing {df_final.shape[0]} records to /tmp/output.csv")
