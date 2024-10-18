@@ -82,7 +82,6 @@ fieldnames = [
     "Pages",
     "Subjects",
     "Countries",
-    "Regions",
 ]
 
 with open("/tmp/cgspace.csv", "w") as f:
@@ -201,14 +200,6 @@ with open("/tmp/cgspace.csv", "w") as f:
         except KeyError:
             pass
 
-        item_regions = []
-        try:
-            for item_region in item["metadata"]["cg.coverage.region"]:
-                if item_region["value"] not in item_regions:
-                    item_regions.append(item_region["value"])
-        except KeyError:
-            pass
-
         writer.writerow(
             {
                 "Title": item_title,
@@ -231,7 +222,6 @@ with open("/tmp/cgspace.csv", "w") as f:
                 "Funders": "; ".join(item_funders),
                 "Subjects": "; ".join(item_subjects),
                 "Countries": "; ".join(item_countries),
-                "Regions": "; ".join(item_regions),
             }
         )
 
