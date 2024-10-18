@@ -455,6 +455,19 @@ logger.info(
 )
 df_final_in_review.to_csv("/tmp/output-used-in-review.csv", index=False)
 
+# Import list of DOIs that were excluded in Rayyan for being reviews, synthesis,
+# opinion, etc, but are climate change related.
+df_dois_combined_dataset = pd.read_csv("data/dois-for-combined-dataset.csv")
+df_final_combined_dataset = df_final[
+    df_final["DOI"].isin(df_dois_in_review["doi"])
+    | df_final["DOI"].isin(df_dois_combined_dataset["doi"])
+]
+# Write to a CSV without an index column
+logger.info(
+    f"Writing {df_final_combined_dataset.shape[0]} records to /tmp/output-combined.csv"
+)
+df_final_combined_dataset.to_csv("/tmp/output-combined.csv", index=False)
+
 # Write to a CSV without an index column
 logger.info(f"Writing {df_final.shape[0]} records to /tmp/output.csv")
 df_final.to_csv("/tmp/output.csv", index=False)
