@@ -70,6 +70,7 @@ fieldnames = [
     "Publisher",
     "Pages",
     "Subjects",
+    "Countries",
 ]
 
 with open("/tmp/cimmyt.csv", "w") as f:
@@ -169,6 +170,14 @@ with open("/tmp/cimmyt.csv", "w") as f:
         except KeyError:
             pass
 
+        item_countries = []
+        try:
+            for item_country in item["metadata"]["dc.coverage.countryfocus"]:
+                if item_country["value"] not in item_countries:
+                    item_countries.append(item_country["value"])
+        except KeyError:
+            pass
+
         # Get language in order of most likelihood in CIMMYT's repository. For
         # Articles it seems they mostly use dc.language:
         # dc.language: 2234
@@ -196,6 +205,7 @@ with open("/tmp/cimmyt.csv", "w") as f:
                 "Pages": item_extent,
                 "Funders": "; ".join(item_funders),
                 "Subjects": "; ".join(item_subjects),
+                "Countries": "; ".join(item_countries),
             }
         )
 

@@ -16,6 +16,7 @@ import shutil
 import sys
 from datetime import datetime, timedelta
 
+import country_converter as coco
 import pandas as pd
 from requests_cache import CachedSession
 
@@ -354,3 +355,32 @@ def normalize_doi(doi):
 
     # return the normalized DOI, and strip it just in case
     return doi.lower().strip()
+
+
+def normalize_countries(countries):
+    """
+    Try to normalize country names to official names.
+
+    Note: this is slower than country_converter's built-in pandas_convert(), but
+    I can't figure out how to deal with our series mixing strings and lists.
+    """
+    if pd.isna(countries):
+        return pd.NA
+
+    # Don't print "Tibet not found in regex" etc
+    coco_logger = coco.logging.getLogger()
+    coco_logger.setLevel(logging.CRITICAL)
+
+    # Convert to official names and keep not found as is. We use the official
+    # names because they seem the less offensive.
+    countries_standardized = coco.convert(
+        names=countries.split("; "), to="name_official", not_found=None
+    )
+
+    # Reset log level
+    coco_logger.setLevel(logger.level)
+
+    if isinstance(countries_standardized, str):
+        return countries_standardized
+    else:
+        return "; ".join(countries_standardized)

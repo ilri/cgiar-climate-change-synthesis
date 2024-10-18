@@ -15,6 +15,7 @@ from util import (
     get_access_rights,
     get_license,
     get_publication_date,
+    normalize_countries,
     normalize_doi,
     pdf_exists,
 )
@@ -62,6 +63,7 @@ df_worldfish = pd.read_csv(
         "dc.source",
         "dc.identifier.issn",
         "dc.publisher",
+        "cg.coverage.country",
     ],
     dtype_backend="pyarrow",
 )
@@ -88,6 +90,7 @@ df_cifor = pd.read_csv(
         "cifor.type.oa",
         "dc.rights",
         "cifor.source.page",
+        "cg.coverage.country",
     ],
     dtype_backend="pyarrow",
 )
@@ -184,6 +187,7 @@ df_worldfish = df_worldfish.rename(
         "dc.source": "Journal",
         "dc.identifier.issn": "ISSN",
         "dc.publisher": "Publisher",
+        "cg.coverage.country": "Countries",
     }
 )
 
@@ -239,6 +243,7 @@ df_cifor = df_cifor.rename(
         "cifor.source.numbers": "Issue",
         "dc.publisher": "Publisher",
         "cifor.source.page": "Pages",
+        "cg.coverage.country": "Countries",
     }
 )
 
@@ -397,6 +402,10 @@ df_final["PDF"] = df_final["DOI"].apply(pdf_exists)
 # row instead of each column, so we can compare the item's dates.
 df_final["Publication date"] = df_final.apply(get_publication_date, axis=1)
 
+# Normalize countries
+logger.info(f"Normalizing countries...")
+df_final["Countries"] = df_final["Countries"].apply(normalize_countries)
+
 # Align headers with Rayyan
 df_final = df_final.rename(
     columns={
@@ -422,6 +431,7 @@ df_final = df_final.filter(
         "Pages",
         "Publisher",
         "Keywords",
+        "Countries",
         "Access rights",
         "Usage rights",
         "PDF",

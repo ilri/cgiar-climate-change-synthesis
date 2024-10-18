@@ -140,6 +140,11 @@ def export_row(row):
     except KeyError:
         extent = ""
 
+    try:
+        countries = row["country"]
+    except KeyError:
+        countries = ""
+
     # Append "climate change" to subjects if we see the corresponding code.
     # I want to make sure this is here so that we don't wonder why an item
     # has matched later
@@ -166,6 +171,7 @@ def export_row(row):
             "Subjects": "; ".join(subjects),
             "Funders": "; ".join(funders),
             "Pages": extent,
+            "Countries": "; ".join(countries),
         }
     )
 
@@ -197,6 +203,7 @@ fieldnames = [
     "Subjects",
     "Funders",
     "Pages",
+    "Countries",
 ]
 writer = csv.DictWriter(output_file_handle, fieldnames=fieldnames)
 writer.writeheader()
