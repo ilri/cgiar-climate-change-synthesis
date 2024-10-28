@@ -304,6 +304,12 @@ df_final = pd.concat(
     join="outer",
 )
 
+
+# Check how many rows we have total before removing any records
+total_number_records = df_final.shape[0]
+
+logger.info(f"Starting with {total_number_records} records...")
+
 # Normalize DOIs so we can deduplicate them
 df_final["DOI"] = df_final["DOI"].apply(normalize_doi)
 
@@ -334,9 +340,6 @@ df_final["Access rights"] = df_final["Access rights"].str.replace(
 df_final["Access rights"] = df_final["Access rights"].str.replace(
     "Open access", "Open Access"
 )
-
-# Check how many rows we have total before deduplicating DOIs
-total_number_records = df_final.shape[0]
 
 # Remove duplicates using the DOI as the unique identifier. We need to use this
 # instead of the much simpler drop_duplicates() because blanks are considered
