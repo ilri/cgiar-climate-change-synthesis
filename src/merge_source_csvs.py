@@ -347,7 +347,9 @@ df_final["Access rights"] = df_final["Access rights"].str.replace(
 # See: https://stackoverflow.com/questions/50154835/drop-duplicates-but-ignore-nulls
 df_final = df_final[(~df_final["DOI"].duplicated()) | df_final["DOI"].isna()]
 
-logger.info(f"Removed {total_number_records - df_final.shape[0]} duplicate DOIs")
+# Update count of removed records
+removed = total_number_records - df_final.shape[0]
+logger.info(f"Removed {removed} duplicate DOIs")
 
 # Check how many rows we have total before deduplicating titles
 total_number_records = df_final.shape[0]
@@ -357,7 +359,8 @@ total_number_records = df_final.shape[0]
 # or differ in case, etc.
 df_final = df_final.drop_duplicates(subset=["Title"], keep="first")
 
-logger.info(f"Removed {total_number_records - df_final.shape[0]} duplicate titles")
+removed = total_number_records - df_final.shape[0]
+logger.info(f"Removed {removed} duplicate titles")
 
 ###
 # Normalize subjects
@@ -374,6 +377,8 @@ df_final["Subjects"] = df_final["Subjects"].apply(deduplicate_subjects)
 
 # Filter out some DOIs that we exclude from the set. For example preprints,
 # book chapters, etc that have been miscataloged in a CGIAR repository).
+total_number_records = df_final.shape[0]
+
 df_dois_to_remove = pd.read_csv("data/dois-to-remove.csv")
 df_final = df_final[~df_final["DOI"].isin(df_dois_to_remove["doi"])]
 
@@ -381,7 +386,7 @@ df_final = df_final[~df_final["DOI"].isin(df_dois_to_remove["doi"])]
 df_urls_to_remove = pd.read_csv("data/urls-to-remove.csv")
 df_final = df_final[~df_final["Repository link"].isin(df_urls_to_remove["url"])]
 
-removed = df_dois_to_remove.shape[0] + df_urls_to_remove.shape[0]
+removed = total_number_records - df_final.shape[0]
 logger.info(f"Removed {removed} preprints, drafts, and book chapters")
 
 # Write a record of items missing DOIs
