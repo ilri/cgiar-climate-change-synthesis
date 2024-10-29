@@ -390,14 +390,14 @@ removed = total_number_records - df_final.shape[0]
 logger.info(f"Removed {removed} preprints, drafts, and book chapters")
 
 # Write a record of items missing DOIs
-df_final_missing_dois = df_final[~df_final["DOI"].str.startswith("10.", na=False)]
+df_final_missing_dois = df_final[~df_final["DOI"].str.startswith("https://doi.org/10.", na=False)]
 logger.info(
     f"Writing {df_final_missing_dois.shape[0]} records to /tmp/output-missing-dois.csv"
 )
 df_final_missing_dois.to_csv("/tmp/output-missing-dois.csv", index=False)
 
 # Extract only items with DOIs, as per the inclusion criteria of the review
-df_final = df_final[df_final["DOI"].str.startswith("10.", na=False)]
+df_final = df_final[df_final["DOI"].str.startswith("https://doi.org/10.", na=False)]
 
 # Write all DOIs to text for debugging
 df_final["DOI"].to_csv("/tmp/dois.txt", header=False, index=False)
@@ -448,14 +448,11 @@ df_final = df_final.filter(
     ]
 )
 
-# After normalizing to a simpler form and dropping duplicates, convert the DOIs
-# back to URIs so they are easier to click in Excel or whatever
-df_final["DOI"] = df_final["DOI"].str.replace(
-    r"^10\.", "https://doi.org/10.", regex=True
-)
-
-# Import list of DOIs that were included in the review via Rayyan. Note that the
-# DOIs here are in URI format so we don't have to convert them in a separate df.
+# Import list of DOIs that were included in the review on Rayyan. Note that we
+# need to filter these based on our `data/dois-to-remove.csv` list so we don't
+# give misleading numbers about the total number of records, as those were al-
+# ready excluded from the dataset after the Rayyan screening (for example, for
+# being removed from a repository, mislabeled language, mislabeled type, etc).
 df_dois_in_review = pd.read_csv("data/included-in-review.csv")
 df_final_in_review = df_final[df_final["DOI"].isin(df_dois_in_review["doi"])]
 logger.info(

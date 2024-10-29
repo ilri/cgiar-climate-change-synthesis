@@ -38,7 +38,7 @@ def get_access_rights(doi: str):
     if pd.isna(doi):
         return access_rights
 
-    if doi.startswith("10."):
+    if doi.startswith("https://doi.org/10."):
         # Opportunistically use an email address from the environment to make
         # sure we get better access to the API.
         try:
@@ -81,7 +81,7 @@ def get_license(doi: str):
     if pd.isna(doi):
         return license
 
-    if doi.startswith("10."):
+    if doi.startswith("https://doi.org/10."):
         # Opportunistically use an email address from the environment to make
         # sure we get better access to the API.
         try:
@@ -182,6 +182,9 @@ def get_license(doi: str):
 def pdf_exists(doi: str):
     if pd.isna(doi):
         return pd.NA
+
+    # Strip URI prefix
+    doi = doi.replace("https://doi.org/", "")
 
     doi_pdf_file = f'{doi.replace("/", "-")}.pdf'
     pdf_path = f"data/pdf/{doi_pdf_file}"
@@ -320,8 +323,8 @@ def clean_string(string):
 
 def normalize_doi(doi):
     """
-    Try to normalize a DOI based on some cases I noticed. Return a clean,
-    standalone DOI with URI components removed, lowercased, and stripped.
+    Try to normalize a DOI based on some cases I noticed. Return a clean
+    DOI in https://doi.org/10. format, lowercased, and stripped.
     """
 
     if pd.isna(doi):
@@ -354,7 +357,7 @@ def normalize_doi(doi):
         doi = re.sub(pattern, "", doi)
 
     # return the normalized DOI, and strip it just in case
-    return doi.lower().strip()
+    return f"https://doi.org/{doi.lower().strip()}"
 
 
 def normalize_countries(countries):
