@@ -490,8 +490,7 @@ logger.info(
 )
 
 df_final_combined_dataset = df_final[
-    df_final["DOI"].isin(df_dois_in_review["doi"])
-    | df_final["DOI"].isin(df_dois_combined_dataset["doi"])
+    df_final["DOI"].isin(df_dois_combined_dataset["doi"])
 ]
 logger.info(f"> Found {df_final_combined_dataset.shape[0]} records in dataset")
 # Write to a CSV without an index column
