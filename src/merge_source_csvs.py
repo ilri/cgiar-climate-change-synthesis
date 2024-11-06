@@ -304,11 +304,10 @@ df_final = pd.concat(
     join="outer",
 )
 
-
 # Check how many rows we have total before removing any records
 total_number_records = df_final.shape[0]
 
-logger.info(f"Starting with {total_number_records} records...")
+logger.info(f"Starting with {total_number_records} records...\n")
 
 # Normalize DOIs so we can deduplicate them
 df_final["DOI"] = df_final["DOI"].apply(normalize_doi)
@@ -341,6 +340,8 @@ df_final["Access rights"] = df_final["Access rights"].str.replace(
     "Open access", "Open Access"
 )
 
+logger.info(f"Removing duplicates...")
+
 # Remove duplicates using the DOI as the unique identifier. We need to use this
 # instead of the much simpler drop_duplicates() because blanks are considered
 # duplicates, which means we drop records that don't have DOIs!
@@ -349,7 +350,7 @@ df_final = df_final[(~df_final["DOI"].duplicated()) | df_final["DOI"].isna()]
 
 # Update count of removed records
 removed = total_number_records - df_final.shape[0]
-logger.info(f"Removed {removed} duplicate DOIs")
+logger.info(f"> Removed {removed} duplicate DOIs")
 
 # Check how many rows we have total before deduplicating titles
 total_number_records = df_final.shape[0]
@@ -360,7 +361,7 @@ total_number_records = df_final.shape[0]
 df_final = df_final.drop_duplicates(subset=["Title"], keep="first")
 
 removed = total_number_records - df_final.shape[0]
-logger.info(f"Removed {removed} duplicate titles")
+logger.info(f"> Removed {removed} duplicate titles\n")
 
 ###
 # Normalize subjects
@@ -375,29 +376,42 @@ df_final["Subjects"] = df_final["Subjects"].str.lower()
 # Deduplicate subjects since we've merged various keyword and subject fields
 df_final["Subjects"] = df_final["Subjects"].apply(deduplicate_subjects)
 
+logger.info(f"Removing preprints, books, drafts, etc...")
+
 # Filter out some DOIs that we exclude from the set. For example preprints,
 # book chapters, etc that have been miscataloged in a CGIAR repository).
 total_number_records = df_final.shape[0]
 
+# Filter DOIs by our `data/dois-to-remove.csv` list
 df_dois_to_remove = pd.read_csv("data/dois-to-remove.csv")
 df_final = df_final[~df_final["DOI"].isin(df_dois_to_remove["doi"])]
+removed = total_number_records - df_final.shape[0]
+logger.info(
+    f"> Removed {removed} DOIs (out of {df_dois_to_remove.shape[0]} considered)"
+)
+
+total_number_records = df_final.shape[0]
 
 # Other URLs to remove
 df_urls_to_remove = pd.read_csv("data/urls-to-remove.csv")
 df_final = df_final[~df_final["Repository link"].isin(df_urls_to_remove["url"])]
-
 removed = total_number_records - df_final.shape[0]
-logger.info(f"Removed {removed} preprints, drafts, and book chapters")
+logger.info(
+    f"> Removed {removed} URLs (out of {df_urls_to_remove.shape[0]} considered)\n"
+)
 
 # Write a record of items missing DOIs
 df_final_missing_dois = df_final[~df_final["DOI"].str.startswith("https://doi.org/10.", na=False)]
 logger.info(
-    f"Writing {df_final_missing_dois.shape[0]} records to /tmp/output-missing-dois.csv"
+    f"Writing {df_final_missing_dois.shape[0]} records to /tmp/output-missing-dois.csv\n"
 )
 df_final_missing_dois.to_csv("/tmp/output-missing-dois.csv", index=False)
 
 # Extract only items with DOIs, as per the inclusion criteria of the review
 df_final = df_final[df_final["DOI"].str.startswith("https://doi.org/10.", na=False)]
+
+total_number_records = df_final.shape[0]
+logger.info(f"Processing remaining {total_number_records} records...\n")
 
 # Write all DOIs to text for debugging
 df_final["DOI"].to_csv("/tmp/dois.txt", header=False, index=False)
@@ -448,28 +462,39 @@ df_final = df_final.filter(
     ]
 )
 
-# Import list of DOIs that were included in the review on Rayyan. Note that we
-# need to filter these based on our `data/dois-to-remove.csv` list so we don't
-# give misleading numbers about the total number of records, as those were al-
-# ready excluded from the dataset after the Rayyan screening (for example, for
-# being removed from a repository, mislabeled language, mislabeled type, etc).
+logger.info(f"Preparing primary dataset...")
+
+# Import list of DOIs that were included in the review on Rayyan. This is the
+# primary dataset matching original CGIAR research on climate change.
 df_dois_in_review = pd.read_csv("data/included-in-review.csv")
-df_final_in_review = df_final[df_final["DOI"].isin(df_dois_in_review["doi"])]
 logger.info(
-    f"Writing {df_final_in_review.shape[0]} records to /tmp/output-used-in-review.csv"
+    f"> Considering {df_dois_in_review.shape[0]} records included in Rayyan screening"
+)
+
+df_final_in_review = df_final[df_final["DOI"].isin(df_dois_in_review["doi"])]
+logger.info(f"> Found {df_final_in_review.shape[0]} records in dataset")
+logger.info(
+    f"> Writing {df_final_in_review.shape[0]} records to /tmp/output-used-in-review.csv\n"
 )
 df_final_in_review.to_csv("/tmp/output-used-in-review.csv", index=False)
 
-# Import list of DOIs that were excluded in Rayyan for being reviews, synthesis,
-# opinion, etc, but are climate change related.
+# Import list of DOIs that were included in the review on Rayyan, plus those
+# that were climate change related, but not original research (like reviews,
+# syntheses, opinion, etc).
+logger.info(f"Preparing 'combined' dataset...")
 df_dois_combined_dataset = pd.read_csv("data/dois-for-combined-dataset.csv")
+logger.info(
+    f"> Considering {df_dois_combined_dataset.shape[0]} records for combined dataset"
+)
+
 df_final_combined_dataset = df_final[
     df_final["DOI"].isin(df_dois_in_review["doi"])
     | df_final["DOI"].isin(df_dois_combined_dataset["doi"])
 ]
+logger.info(f"> Found {df_final_combined_dataset.shape[0]} records in dataset")
 # Write to a CSV without an index column
 logger.info(
-    f"Writing {df_final_combined_dataset.shape[0]} records to /tmp/output-combined.csv"
+    f"> Writing {df_final_combined_dataset.shape[0]} records to /tmp/output-combined.csv\n"
 )
 df_final_combined_dataset.to_csv("/tmp/output-combined.csv", index=False)
 
