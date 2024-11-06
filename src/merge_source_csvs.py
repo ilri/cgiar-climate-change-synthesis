@@ -312,34 +312,6 @@ logger.info(f"Starting with {total_number_records} records...\n")
 # Normalize DOIs so we can deduplicate them
 df_final["DOI"] = df_final["DOI"].apply(normalize_doi)
 
-# Get licenses from Crossref because it's more reliable and standardized
-df_final["Crossref"] = df_final["DOI"].apply(get_license)
-# Fill in missing licenses from repository metadata
-df_final["Usage rights"] = df_final["Crossref"].combine_first(df_final["Usage rights"])
-df_final = df_final.drop("Crossref", axis="columns")
-# Minor alignment for CIFOR licenses
-df_final["Usage rights"] = df_final["Usage rights"].str.replace(
-    "Attribution 4.0", "CC-BY-4.0"
-)
-
-# Get access rights from Unpaywall because it's more reliable and standardized
-df_final["Unpaywall"] = df_final["DOI"].apply(get_access_rights)
-# Fill in missing access rights from repository metadata
-df_final["Access rights"] = df_final["Unpaywall"].combine_first(
-    df_final["Access rights"]
-)
-df_final = df_final.drop("Unpaywall", axis="columns")
-# Minor alignment for CIFOR and MELSpace access rights
-df_final["Access rights"] = df_final["Access rights"].str.replace(
-    "Closed access", "Limited Access"
-)
-df_final["Access rights"] = df_final["Access rights"].str.replace(
-    "Gold open access", "Gold Open Access"
-)
-df_final["Access rights"] = df_final["Access rights"].str.replace(
-    "Open access", "Open Access"
-)
-
 logger.info(f"Removing duplicates...")
 
 # Remove duplicates using the DOI as the unique identifier. We need to use this
@@ -414,6 +386,34 @@ df_final = df_final[df_final["DOI"].str.startswith("https://doi.org/10.", na=Fal
 
 total_number_records = df_final.shape[0]
 logger.info(f"Processing remaining {total_number_records} records...\n")
+
+# Get licenses from Crossref because it's more reliable and standardized
+df_final["Crossref"] = df_final["DOI"].apply(get_license)
+# Fill in missing licenses from repository metadata
+df_final["Usage rights"] = df_final["Crossref"].combine_first(df_final["Usage rights"])
+df_final = df_final.drop("Crossref", axis="columns")
+# Minor alignment for CIFOR licenses
+df_final["Usage rights"] = df_final["Usage rights"].str.replace(
+    "Attribution 4.0", "CC-BY-4.0"
+)
+
+# Get access rights from Unpaywall because it's more reliable and standardized
+df_final["Unpaywall"] = df_final["DOI"].apply(get_access_rights)
+# Fill in missing access rights from repository metadata
+df_final["Access rights"] = df_final["Unpaywall"].combine_first(
+    df_final["Access rights"]
+)
+df_final = df_final.drop("Unpaywall", axis="columns")
+# Minor alignment for CIFOR and MELSpace access rights
+df_final["Access rights"] = df_final["Access rights"].str.replace(
+    "Closed access", "Limited Access"
+)
+df_final["Access rights"] = df_final["Access rights"].str.replace(
+    "Gold open access", "Gold Open Access"
+)
+df_final["Access rights"] = df_final["Access rights"].str.replace(
+    "Open access", "Open Access"
+)
 
 # Write all DOIs to text for debugging
 df_final["DOI"].to_csv("/tmp/dois.txt", header=False, index=False)
