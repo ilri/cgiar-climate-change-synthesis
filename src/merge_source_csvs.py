@@ -385,8 +385,9 @@ df_final_missing_dois.to_csv("/tmp/output-missing-dois.csv", index=False)
 df_final = df_final[df_final["DOI"].str.startswith("https://doi.org/10.", na=False)]
 
 total_number_records = df_final.shape[0]
-logger.info(f"Processing remaining {total_number_records} records...\n")
+logger.info(f"Processing remaining {total_number_records} records...")
 
+logger.info(f"> Looking up licenses on Crossref...")
 # Get licenses from Crossref because it's more reliable and standardized
 df_final["Crossref"] = df_final["DOI"].apply(get_license)
 # Fill in missing licenses from repository metadata
@@ -397,6 +398,7 @@ df_final["Usage rights"] = df_final["Usage rights"].str.replace(
     "Attribution 4.0", "CC-BY-4.0"
 )
 
+logger.info(f"> Looking up access rights on Unpaywall...")
 # Get access rights from Unpaywall because it's more reliable and standardized
 df_final["Unpaywall"] = df_final["DOI"].apply(get_access_rights)
 # Fill in missing access rights from repository metadata
@@ -418,6 +420,7 @@ df_final["Access rights"] = df_final["Access rights"].str.replace(
 # Write all DOIs to text for debugging
 df_final["DOI"].to_csv("/tmp/dois.txt", header=False, index=False)
 
+logger.info(f"> Checking for PDFs...")
 # After dropping items without DOIs, check if we have the PDF
 df_final["PDF"] = df_final["DOI"].apply(pdf_exists)
 
@@ -427,7 +430,7 @@ df_final["PDF"] = df_final["DOI"].apply(pdf_exists)
 df_final["Publication date"] = df_final.apply(get_publication_date, axis=1)
 
 # Normalize countries
-logger.info(f"Normalizing countries...")
+logger.info(f"> Normalizing countries...\n")
 df_final["Countries"] = df_final["Countries"].apply(normalize_countries)
 
 # Align headers with Rayyan
