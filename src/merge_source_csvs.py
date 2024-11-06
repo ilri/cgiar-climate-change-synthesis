@@ -401,7 +401,9 @@ logger.info(
 )
 
 # Write a record of items missing DOIs
-df_final_missing_dois = df_final[~df_final["DOI"].str.startswith("https://doi.org/10.", na=False)]
+df_final_missing_dois = df_final[
+    ~df_final["DOI"].str.startswith("https://doi.org/10.", na=False)
+]
 logger.info(
     f"Writing {df_final_missing_dois.shape[0]} records to /tmp/output-missing-dois.csv\n"
 )
