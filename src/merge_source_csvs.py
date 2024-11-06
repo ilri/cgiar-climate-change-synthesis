@@ -499,6 +499,35 @@ logger.info(
 )
 df_final_combined_dataset.to_csv("/tmp/output-combined.csv", index=False)
 
+logger.info(f"Preparing datasets for thematic areas...")
+
+df_dois_drought_dataset = pd.read_csv("data/dois-thematic-analysis-drought.csv")
+df_final_drought_dataset = df_final[
+    df_final["DOI"].isin(df_dois_drought_dataset["doi"])
+]
+logger.info(
+    f"> Writing {df_final_drought_dataset.shape[0]} records to /tmp/output-drought.csv"
+)
+df_final_drought_dataset.to_csv("/tmp/output-drought.csv", index=False)
+
+df_dois_rainfall_dataset = pd.read_csv("data/dois-thematic-analysis-rainfall.csv")
+df_final_rainfall_dataset = df_final[
+    df_final["DOI"].isin(df_dois_rainfall_dataset["doi"])
+]
+logger.info(
+    f"> Writing {df_final_rainfall_dataset.shape[0]} records to /tmp/output-rainfall.csv"
+)
+df_final_rainfall_dataset.to_csv("/tmp/output-rainfall.csv", index=False)
+
+df_dois_adaptation_dataset = pd.read_csv("data/dois-thematic-analysis-adaptation.csv")
+df_final_adaptation_dataset = df_final[
+    df_final["DOI"].isin(df_dois_adaptation_dataset["doi"])
+]
+logger.info(
+    f"> Writing {df_final_adaptation_dataset.shape[0]} records to /tmp/output-adaptation.csv\n"
+)
+df_final_adaptation_dataset.to_csv("/tmp/output-adaptation.csv", index=False)
+
 # Write to a CSV without an index column
 logger.info(f"Writing {df_final.shape[0]} records to /tmp/output.csv")
 df_final.to_csv("/tmp/output.csv", index=False)
