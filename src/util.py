@@ -170,6 +170,15 @@ def get_license(doi: str):
         license = license.replace(
             "https://www.cambridge.org/core/terms", "Copyrighted; all rights reserved"
         )
+        license = license.replace(
+            "https://academic.oup.com/pages/standard-publication-reuse-rights", "Copyrighted; all rights reserved"
+        )
+        license = license.replace(
+            "https://www.elsevier.com/legal/tdmrep-license", "Copyrighted; all rights reserved"
+        )
+        license = license.replace(
+            "http://doi.wiley.com/10.1002/tdm_license_1.1", "Copyrighted; all rights reserved"
+        )
 
     # Reset some licenses back to pd.NA since we can't determine, and hopefully
     # we can fill in the missing information from repository metadata.
