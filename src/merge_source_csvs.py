@@ -433,6 +433,9 @@ df_final["Publication date"] = df_final.apply(get_publication_date, axis=1)
 logger.info(f"> Normalizing countries...\n")
 df_final["Countries"] = df_final["Countries"].apply(normalize_countries)
 
+# Use YYYY dates for Rayyan
+df_final["Publication date"] = df_final["Publication date"].str.slice(start=0, stop=4)
+
 # Align headers with Rayyan
 df_final = df_final.rename(
     columns={
