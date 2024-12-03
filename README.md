@@ -11,6 +11,7 @@ Search CGIAR institutional repositories to find items matching the following cri
 - **Output type:** Journal Article
 - **Language:** English
 - The words "climate change" in the title, subjects, or abstract
+- DOI assigned
 
 Repository APIs were used to perform initial searches. Due to limitations in some APIs, further filtering was carried out to ensure items matched the basic inclusion criteria. See `src/update-sources.sh`.
 
