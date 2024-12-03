@@ -5,6 +5,7 @@
 
 import csv
 import logging
+import sys
 from datetime import timedelta
 
 from requests_cache import CachedSession
@@ -37,7 +38,7 @@ if r.ok:
     for item in r.json()["_embedded"]["searchResult"]["_embedded"]["objects"]:
         items.append(item["_embedded"]["indexableObject"])
 else:
-    exit
+    sys.exit(1)
 
 # Get link to next page of results
 url = r.json()["_embedded"]["searchResult"]["_links"]["next"]["href"]
