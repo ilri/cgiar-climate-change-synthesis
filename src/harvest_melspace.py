@@ -112,7 +112,11 @@ with open("/tmp/melspace.csv", "w") as f:
         item_funders = []
         try:
             for item_funder in item["metadata"]["cg.contributor.funder"]:
-                item_funders.append(item_funder["value"])
+                # MELSpace insists on this, but it adds no value
+                if item_funder["value"] == "Not Applicable":
+                    pass
+                else:
+                    item_funders.append(item_funder["value"])
         except KeyError:
             pass
 
