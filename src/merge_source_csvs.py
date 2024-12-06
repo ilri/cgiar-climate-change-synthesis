@@ -12,6 +12,7 @@ import pandas as pd
 
 from util import (
     deduplicate_subjects,
+    filter_abstracts,
     get_access_rights,
     get_license,
     get_publication_date,
@@ -431,6 +432,11 @@ df_final["PDF"] = df_final["DOI"].apply(pdf_exists)
 # the online date. The `axis=1` means we want to apply this function on each
 # row instead of each column, so we can compare the item's dates.
 df_final["Publication date"] = df_final.apply(get_publication_date, axis=1)
+
+# Filter abstracts to err on the side of caution regarding distribution of copy-
+# righted material.
+logger.info(f"> Filtering copyrighted abstracts...\n")
+df_final["Abstract"] = df_final.apply(filter_abstracts, axis=1)
 
 # Normalize countries
 logger.info(f"> Normalizing countries...\n")

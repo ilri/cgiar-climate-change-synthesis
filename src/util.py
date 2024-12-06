@@ -399,3 +399,43 @@ def normalize_countries(countries):
         return countries_standardized
     else:
         return "; ".join(countries_standardized)
+
+
+# Filter our abstracts so we don't accidentally distribute copyrighted material.
+# The exceptions here are if the work is licensed creative commons, or if the
+# abstract has been deposited by the publisher in Crossref, since they have an
+# agreement allowing you to redistribute them.
+#
+# See: https://www.crossref.org/documentation/retrieve-metadata/rest-api/rest-api-metadata-license-information/
+def filter_abstracts(row: pd.Series) -> str:
+    # If there's no abstract we can return immediately
+    if pd.isna(row["Abstract"]):
+        return pd.NA
+
+    # If the work is Creative Commons we can return immediately
+    if pd.notna(row["Usage rights"]) and "CC-" in row["Usage rights"]:
+        return row["Abstract"]
+
+    # Check if the abstract is on Crossref
+    try:
+        request_params = {"mailto": os.environ["EMAIL"]}
+    except KeyError:
+        request_params = {}
+
+    url = f"https://api.crossref.org/works/{row['DOI']}"
+
+    r = session.get(url, params=request_params)
+
+    # HTTP 404 here means the DOI is not registered at Crossref
+    if not r.ok:
+        return pd.NA
+
+    data = r.json()
+
+    try:
+        data["message"]["abstract"]
+        return row["Abstract"]
+    except KeyError:
+        pass
+
+    return pd.NA
