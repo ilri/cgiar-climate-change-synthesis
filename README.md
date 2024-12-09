@@ -46,6 +46,25 @@ CGIAR institutional repositories used in this dataset (sorted by total number of
 - UNIX-like operating system
 
 
+## Usage
+
+This project is managed using [uv](https://docs.astral.sh/uv/). You will need to install that first, or use a vanilla Python virtual environment to install the dependencies:
+
+```console
+$ python -m venv venv
+$ source venv/bin/activate
+$ pip install -r requirements.txt
+```
+
+Once the dependencies are installed you can run the pipeline:
+
+```console
+$ ./src/merge_source_csvs.py
+```
+
+This will use pre-harvested data from the `data` directory, as the harvest process can take many hours (up to 1 day). To update sources, use the `src/update_sources.sh` script. Caches are used where possible to speed up repeated runs.
+
+
 ## License
 This work is licensed under the [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html).
 
