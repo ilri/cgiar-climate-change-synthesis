@@ -14,7 +14,7 @@ dependencies = [
     "packaging>=24.1",
     "pandas[feather,performance]~=2.2",
     "requests-cache~=1.2.1",
-    "tqdm~=4.66.0",
+    "tqdm~=4.67.1",
     "country-converter~=1.2",
 ]
 
