@@ -1,4 +1,4 @@
-# CGIAR Climate Change Synthesis
+# CGIAR Climate Change Synthesis Scripts
 
 Code used to generate datasets for the 2024 synthesis of CGIAR work on climate change.
 
