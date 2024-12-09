@@ -1,6 +1,6 @@
 # CGIAR Climate Change Synthesis
 
-Code used to generate the dataset for the 2024 Synthesis of CGIAR work on climate change.
+Code used to generate datasets for the 2024 synthesis of CGIAR work on climate change.
 
 
 ## Methodology
