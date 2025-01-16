@@ -10,8 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Normalize countries to common short names instead of official names, drop unmatched countries, and de-duplicate list
-- Add UN regions based on countries
-- Add continents based on countries
+
+### Added
+
+- Add column with UN regions (based on countries)
+- Add column continents (based on countries)
 
 ## [1.0.0] - 2024-12-09
 
