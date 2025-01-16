@@ -386,10 +386,9 @@ def normalize_countries(countries):
     coco_logger = coco.logging.getLogger()
     coco_logger.setLevel(logging.CRITICAL)
 
-    # Convert to official names and keep not found as is. We use the official
-    # names because they seem the less offensive.
+    # Convert to common short names and keep not found as is
     countries_standardized = coco.convert(
-        names=countries.split("; "), to="name_official", not_found=None
+        names=countries.split("; "), to="name_short", not_found=None
     )
 
     # Reset log level
