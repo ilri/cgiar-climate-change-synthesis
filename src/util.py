@@ -374,7 +374,7 @@ def normalize_doi(doi):
 
 def normalize_countries(countries):
     """
-    Try to normalize country names to official names.
+    Try to normalize country names to common short names.
 
     Note: this is slower than country_converter's built-in pandas_convert(), but
     I can't figure out how to deal with our series mixing strings and lists.
