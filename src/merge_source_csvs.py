@@ -11,6 +11,7 @@ import warnings
 import pandas as pd
 
 from util import (
+    add_regions,
     deduplicate_subjects,
     filter_abstracts,
     get_access_rights,
@@ -443,6 +444,10 @@ logger.info(f"> Normalizing countries...\n")
 df_final["Countries"] = df_final["Countries"].apply(normalize_countries)
 df_final["Countries"] = df_final["Countries"].apply(deduplicate_subjects)
 
+logger.info(f"> Adding regions...\n")
+df_final["Regions"] = df_final["Countries"].apply(add_regions)
+df_final["Regions"] = df_final["Regions"].apply(deduplicate_subjects)
+
 # Use YYYY dates for Rayyan
 df_final["Publication date"] = df_final["Publication date"].str.slice(start=0, stop=4)
 
@@ -471,6 +476,7 @@ df_final = df_final.filter(
         "Pages",
         "Publisher",
         "Keywords",
+        "Regions",
         "Countries",
         "Access rights",
         "Usage rights",

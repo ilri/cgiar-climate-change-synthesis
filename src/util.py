@@ -443,3 +443,31 @@ def filter_abstracts(row: pd.Series) -> str:
         pass
 
     return pd.NA
+
+
+def add_regions(countries):
+    """
+    Add regions for a list of countries.
+    """
+    if pd.isna(countries):
+        return pd.NA
+
+    # Don't print "Tibet not found in regex" etc
+    coco_logger = coco.logging.getLogger()
+    coco_logger.setLevel(logging.CRITICAL)
+
+    # Convert to common short names
+    regions = coco.convert(names=countries.split("; "), to="UNRegion")
+
+    # Reset log level
+    coco_logger.setLevel(logger.level)
+
+    if isinstance(regions, str):
+        if regions == "not found":
+            return pd.NA
+        else:
+            return regions
+    else:
+        regions = [region for region in regions if region != "not found"]
+
+        return "; ".join(regions)
