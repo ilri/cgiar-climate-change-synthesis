@@ -471,3 +471,31 @@ def add_regions(countries):
         regions = [region for region in regions if region != "not found"]
 
         return "; ".join(regions)
+
+
+def add_continents(countries):
+    """
+    Add continents for a list of countries.
+    """
+    if pd.isna(countries):
+        return pd.NA
+
+    # Don't print "Tibet not found in regex" etc
+    coco_logger = coco.logging.getLogger()
+    coco_logger.setLevel(logging.CRITICAL)
+
+    # Convert to countries to continents
+    continents = coco.convert(names=countries.split("; "), to="Continent_7")
+
+    # Reset log level
+    coco_logger.setLevel(logger.level)
+
+    if isinstance(continents, str):
+        if continents == "not found":
+            return pd.NA
+        else:
+            return continents
+    else:
+        continents = [continent for continent in continents if continent != "not found"]
+
+        return "; ".join(continents)
