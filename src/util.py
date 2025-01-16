@@ -456,7 +456,7 @@ def add_regions(countries):
     coco_logger = coco.logging.getLogger()
     coco_logger.setLevel(logging.CRITICAL)
 
-    # Convert to common short names
+    # Convert countries to UN regions
     regions = coco.convert(names=countries.split("; "), to="UNRegion")
 
     # Reset log level
