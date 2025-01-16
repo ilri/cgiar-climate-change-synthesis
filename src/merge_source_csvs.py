@@ -436,11 +436,11 @@ df_final["Publication date"] = df_final.apply(get_publication_date, axis=1)
 
 # Filter abstracts to err on the side of caution regarding distribution of copy-
 # righted material.
-logger.info(f"> Filtering copyrighted abstracts...\n")
+logger.info(f"> Filtering copyrighted abstracts...")
 df_final["Abstract"] = df_final.apply(filter_abstracts, axis=1)
 
 # Normalize and de-duplicate countries
-logger.info(f"> Normalizing countries...\n")
+logger.info(f"> Normalizing countries...")
 df_final["Countries"] = df_final["Countries"].apply(normalize_countries)
 df_final["Countries"] = df_final["Countries"].apply(deduplicate_subjects)
 
