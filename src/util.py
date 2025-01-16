@@ -17,19 +17,23 @@ import sys
 from datetime import datetime, timedelta
 
 import country_converter as coco
+import requests
+import requests_cache
 import pandas as pd
-from requests_cache import CachedSession
+import pyalex
 
 # Create a local logger instance for this module. We don't do any configuration
 # because this module might be used elsewhere that will have its own logging
 # configuration.
 logger = logging.getLogger(__name__)
 
-session = CachedSession(
+# We must use the monkey-patching method of requests_cache instead of the more
+# clean CachedSession because pyalex can't use the session manager.
+requests_cache.install_cache(
     "util-cache", expire_after=timedelta(days=30), allowable_codes=(200, 404)
 )
-# prune old cache entries
-session.cache.delete(expired=True)
+
+requests_cache.delete(expired=True)
 
 
 def get_access_rights(doi: str):
@@ -48,7 +52,7 @@ def get_access_rights(doi: str):
 
         url = f"https://api.unpaywall.org/v2/{doi}"
 
-        r = session.get(url, params=request_params)
+        r = requests.get(url, params=request_params)
     else:
         return access_rights
 
@@ -91,7 +95,7 @@ def get_license(doi: str):
 
         url = f"https://api.crossref.org/works/{doi}"
 
-        r = session.get(url, params=request_params)
+        r = requests.get(url, params=request_params)
     else:
         return license
 
@@ -211,7 +215,9 @@ def pdf_exists(doi: str):
 # Try to see which DSpace version this is
 def detect_dspace_version(dspace_root: str) -> str:
     # Maybe it's DSpace 7.x
-    r = session.get(f"{dspace_root}/server/api", headers={"Accept": "application/json"})
+    r = requests.get(
+        f"{dspace_root}/server/api", headers={"Accept": "application/json"}
+    )
     if r.ok:
         try:
             # Could be 7.6 or 7.6.2, etc
@@ -224,7 +230,7 @@ def detect_dspace_version(dspace_root: str) -> str:
             pass
 
     # Maybe it's DSpace 6.x and we can get the version from the REST API?
-    r = session.get(
+    r = requests.get(
         f"{dspace_root}/rest/status", headers={"Accept": "application/json"}
     )
     if r.ok:
@@ -236,7 +242,7 @@ def detect_dspace_version(dspace_root: str) -> str:
             pass
 
     # Nope! Guess we have to parse the HTML Generator meta tag
-    r = session.get(dspace_root)
+    r = requests.get(dspace_root)
 
     if r.ok:
         # Search for the Generator meta tag, which could be something like:
@@ -428,7 +434,7 @@ def filter_abstracts(row: pd.Series) -> str:
 
     url = f"https://api.crossref.org/works/{row['DOI']}"
 
-    r = session.get(url, params=request_params)
+    r = requests.get(url, params=request_params)
 
     # HTTP 404 here means the DOI is not registered at Crossref
     if not r.ok:
@@ -499,3 +505,27 @@ def add_continents(countries):
         continents = [continent for continent in continents if continent != "not found"]
 
         return "; ".join(continents)
+
+
+def retrieve_abstract_openalex(row: pd.Series) -> str:
+    """
+    Attempt to retrieve missing abstracts on OpenAlex.
+    """
+    # If there's already an abstract we can return immediately
+    if pd.notna(row["Abstract"]):
+        return row["Abstract"]
+
+    try:
+        pyalex.config.email = os.environ["EMAIL"]
+    except KeyError:
+        pass
+
+    try:
+        w = pyalex.Works()[row["DOI"]]
+    except requests.exceptions.HTTPError:
+        sys.exit(1)
+
+    if not w["abstract"]:
+        return pd.NA
+
+    return w["abstract"]

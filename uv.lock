@@ -17,7 +17,7 @@ dependencies = [
     { name = "parsedatetime" },
     { name = "python-slugify" },
     { name = "pytimeparse" },
-    { name = "tzdata", marker = "platform_system == 'Windows'" },
+    { name = "tzdata", marker = "sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/62/b5/7ea4dc82949dd40fb7277ce0fe9b57a44a1da28b1411327dc24ec2fffcff/agate-1.12.0.tar.gz", hash = "sha256:7989841ac7de69e57389485c0b7cdab2e1a54c7480c629a76912bb7c331d991b", size = 203989 }
 wheels = [
@@ -189,6 +189,7 @@ dependencies = [
     { name = "csvkit" },
     { name = "packaging" },
     { name = "pandas", extra = ["feather", "performance"] },
+    { name = "pyalex" },
     { name = "requests-cache" },
     { name = "tqdm" },
 ]
@@ -206,6 +207,7 @@ requires-dist = [
     { name = "csvkit", specifier = "~=2.0.1" },
     { name = "packaging", specifier = ">=24.1" },
     { name = "pandas", extras = ["feather", "performance"], specifier = "~=2.2" },
+    { name = "pyalex", specifier = "~=0.15.1" },
     { name = "requests-cache", specifier = "~=1.2.1" },
     { name = "tqdm", specifier = "~=4.66.0" },
 ]
@@ -276,7 +278,7 @@ name = "click"
 version = "8.1.7"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "platform_system == 'Windows'" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/96/d3/f04c7bfcf5c1862a2a5b845c6b2b360488cf47af55dfa79c98f6a6bf98b5/click-8.1.7.tar.gz", hash = "sha256:ca9853ad459e787e2192211578cc907e7594e294c7ccc834310722b41b9ca6de", size = 336121 }
 wheels = [
@@ -798,6 +800,19 @@ wheels = [
 ]
 
 [[package]]
+name = "pyalex"
+version = "0.15.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "requests" },
+    { name = "urllib3" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/aa/de/1edd12185f2eb950a8a65042e7c5e1dec31aa2b04a78af8d6c72be22c246/pyalex-0.15.1.tar.gz", hash = "sha256:064ae2bc20b21e66a813bccf7f1aec3223ab112ca77e8a1f3e40d657281d181f", size = 44458 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/da/3f/e2dfe66db69c2900099ec966b6405912c11be65f4f38ab0c2a3eb56b5730/pyalex-0.15.1-py3-none-any.whl", hash = "sha256:713a1aa1cee77f89f212afa58a0a262dbcea46b3c8a4a62dc232f2ed3ccf1ce3", size = 11095 },
+]
+
+[[package]]
 name = "pyarrow"
 version = "17.0.0"
 source = { registry = "https://pypi.org/simple" }
@@ -995,7 +1010,7 @@ name = "tqdm"
 version = "4.66.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "platform_system == 'Windows'" },
+    { name = "colorama", marker = "sys_platform == 'win32'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/58/83/6ba9844a41128c62e810fddddd72473201f3eacde02046066142a2d96cc5/tqdm-4.66.5.tar.gz", hash = "sha256:e1020aef2e5096702d8a025ac7d16b1577279c9d63f8375b63083e9a5f0fcbad", size = 169504 }
 wheels = [

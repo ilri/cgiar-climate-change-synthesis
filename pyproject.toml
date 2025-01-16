@@ -16,6 +16,7 @@ dependencies = [
     "requests-cache~=1.2.1",
     "tqdm~=4.66.0",
     "country-converter~=1.2",
+    "pyalex~=0.15.1",
 ]
 
 # See: https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#classifiers

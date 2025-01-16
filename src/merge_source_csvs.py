@@ -21,6 +21,7 @@ from util import (
     normalize_countries,
     normalize_doi,
     pdf_exists,
+    retrieve_abstract_openalex,
 )
 
 logger = logging.getLogger()
@@ -434,6 +435,10 @@ df_final["PDF"] = df_final["DOI"].apply(pdf_exists)
 # the online date. The `axis=1` means we want to apply this function on each
 # row instead of each column, so we can compare the item's dates.
 df_final["Publication date"] = df_final.apply(get_publication_date, axis=1)
+
+# Retrieve missing abstracts from OpenAlex
+logger.info(f"> Retrieving missing abstracts from OpenAlex...")
+df_final["Abstract"] = df_final.apply(retrieve_abstract_openalex, axis=1)
 
 # Filter abstracts to err on the side of caution regarding distribution of copy-
 # righted material.
