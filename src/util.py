@@ -523,7 +523,7 @@ def retrieve_abstract_openalex(row: pd.Series) -> str:
     try:
         w = pyalex.Works()[row["DOI"]]
     except requests.exceptions.HTTPError:
-        sys.exit(1)
+        return pd.NA
 
     if not w["abstract"]:
         return pd.NA
