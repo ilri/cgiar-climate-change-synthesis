@@ -438,9 +438,10 @@ df_final["Publication date"] = df_final.apply(get_publication_date, axis=1)
 logger.info(f"> Filtering copyrighted abstracts...\n")
 df_final["Abstract"] = df_final.apply(filter_abstracts, axis=1)
 
-# Normalize countries
+# Normalize and de-duplicate countries
 logger.info(f"> Normalizing countries...\n")
 df_final["Countries"] = df_final["Countries"].apply(normalize_countries)
+df_final["Countries"] = df_final["Countries"].apply(deduplicate_subjects)
 
 # Use YYYY dates for Rayyan
 df_final["Publication date"] = df_final["Publication date"].str.slice(start=0, stop=4)
