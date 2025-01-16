@@ -386,17 +386,22 @@ def normalize_countries(countries):
     coco_logger = coco.logging.getLogger()
     coco_logger.setLevel(logging.CRITICAL)
 
-    # Convert to common short names and keep not found as is
-    countries_standardized = coco.convert(
-        names=countries.split("; "), to="name_short", not_found=None
-    )
+    # Convert to common short names
+    countries_standardized = coco.convert(names=countries.split("; "), to="name_short")
 
     # Reset log level
     coco_logger.setLevel(logger.level)
 
     if isinstance(countries_standardized, str):
-        return countries_standardized
+        if countries_standardized == "not found":
+            return pd.NA
+        else:
+            return countries_standardized
     else:
+        countries_standardized = [
+            country for country in countries_standardized if country != "not found"
+        ]
+
         return "; ".join(countries_standardized)
 
 
