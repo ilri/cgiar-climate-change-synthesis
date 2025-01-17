@@ -354,7 +354,12 @@ df_final["Subjects"] = df_final["Subjects"].str.lower()
 
 # Drop "climate change" subject since it's implied in this dataset
 # See: https://regex101.com/r/PEMT8t/1
-df_final["Subjects"] = df_final["Subjects"].str.replace(r";?\s?(cambio climatico|cambio climático|climate change);?\s?", "", regex=True)
+# At the beginning
+df_final["Subjects"] = df_final["Subjects"].str.replace(r"^(cambio climatico|cambio climático|climate change);?\s?", "", regex=True)
+# In the middle
+df_final["Subjects"] = df_final["Subjects"].str.replace(r";\s?(cambio climatico|cambio climático|climate change);\s?", "; ", regex=True)
+# At the end
+df_final["Subjects"] = df_final["Subjects"].str.replace(r"(cambio climatico|cambio climático|climate change)$", "", regex=True)
 
 # Deduplicate subjects since we've merged various keyword and subject fields
 df_final["Subjects"] = df_final["Subjects"].apply(deduplicate_subjects)
