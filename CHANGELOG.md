@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Normalize countries to common short names instead of official names, drop unmatched countries, and de-duplicate list
+- Remove "climate change" keyword since it is implied that all journal articles are climate change related and it congests tag clouds and topic lists
 
 ### Added
 
