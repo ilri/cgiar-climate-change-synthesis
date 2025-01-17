@@ -22,6 +22,7 @@ from util import (
     normalize_doi,
     pdf_exists,
     retrieve_abstract_openalex,
+    retrieve_publisher_crossref,
 )
 
 logger = logging.getLogger()
@@ -448,6 +449,62 @@ df_final["Publication date"] = df_final.apply(get_publication_date, axis=1)
 # Retrieve missing abstracts from OpenAlex
 logger.info(f"> Retrieving missing abstracts from OpenAlex...")
 df_final["Abstract"] = df_final.apply(retrieve_abstract_openalex, axis=1)
+
+# Retrieve missing publishers from Crossref
+logger.info(f"> Retrieving missing publishers from Crossref...")
+df_final["Publisher"] = df_final.apply(retrieve_publisher_crossref, axis=1)
+
+# Normalize some variants of big publishers, by count in our dataset, based on
+# some of the cases I noticed.
+df_final["Publisher"] = df_final["Publisher"].str.replace(
+    r"^Elsevier.+", "Elsevier", regex=True
+)
+df_final["Publisher"] = df_final["Publisher"].str.replace(
+    r"^Springer.+", "Springer", regex=True
+)
+df_final["Publisher"] = df_final["Publisher"].str.replace(
+    r"^.*Wiley.+", "Wiley", regex=True
+)
+df_final["Publisher"] = df_final["Publisher"].str.replace(
+    r"^MDPI.+", "MDPI", regex=True
+)
+df_final["Publisher"] = df_final["Publisher"].str.replace(
+    r"^Frontiers.+", "Frontiers", regex=True
+)
+df_final["Publisher"] = df_final["Publisher"].str.replace(
+    r"^Public Library of Science.+", "Public Library of Science", regex=True
+)
+df_final["Publisher"] = df_final["Publisher"].str.replace(
+    r"^PLOS.*", "Public Library of Science", regex=True
+)
+df_final["Publisher"] = df_final["Publisher"].str.replace(
+    r"^Cambridge University Press.+", "Cambridge University Press", regex=True
+)
+df_final["Publisher"] = df_final["Publisher"].str.replace(
+    r"^Taylor (and|&) Francis.*", "Taylor & Francis", regex=True
+)
+df_final["Publisher"] = df_final["Publisher"].str.replace(
+    r"^Oxford University Press.+", "Oxford University Press", regex=True
+)
+df_final["Publisher"] = df_final["Publisher"].str.replace(
+    r"^Emerald.+", "Emerald", regex=True
+)
+df_final["Publisher"] = df_final["Publisher"].str.replace(
+    r"^The Royal Society", "Royal Society", regex=True
+)
+df_final["Publisher"] = df_final["Publisher"].str.replace(
+    r"^CABI.*", "CAB International", regex=True
+)
+df_final["Publisher"] = df_final["Publisher"].str.replace(
+    r"^Crop Science Society of America (CSSA)",
+    "Crop Science Society of America",
+    regex=True,
+)
+df_final["Publisher"] = df_final["Publisher"].str.replace(
+    r"^CSIRO.*",
+    "Commonwealth Scientific and Industrial Research Organisation",
+    regex=True,
+)
 
 # Filter abstracts to err on the side of caution regarding distribution of copy-
 # righted material.

@@ -529,3 +529,35 @@ def retrieve_abstract_openalex(row: pd.Series) -> str:
         return pd.NA
 
     return w["abstract"]
+
+
+def retrieve_publisher_crossref(row: pd.Series) -> str:
+    """
+    Attempt to retrieve missing publishers from Crossref.
+    """
+    # If there's already a publisher we can return immediately
+    if pd.notna(row["Publisher"]):
+        return row["Publisher"]
+
+    # Check if the publisher is on Crossref
+    try:
+        request_params = {"mailto": os.environ["EMAIL"]}
+    except KeyError:
+        request_params = {}
+
+    url = f"https://api.crossref.org/works/{row['DOI']}"
+
+    r = requests.get(url, params=request_params)
+
+    # HTTP 404 here means the DOI is not registered at Crossref
+    if not r.ok:
+        return pd.NA
+
+    data = r.json()
+
+    try:
+        publisher = data["message"]["publisher"]
+    except KeyError:
+        return pd.NA
+
+    return publisher
