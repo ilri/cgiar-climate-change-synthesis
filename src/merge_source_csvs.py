@@ -578,7 +578,11 @@ logger.info(
     f"> Considering {df_dois_in_review.shape[0]} records included in Rayyan screening"
 )
 
-df_final_in_review = df_final[df_final["DOI"].isin(df_dois_in_review["doi"])]
+# Add a column for original research. These are DOIs that were included in the
+# review.
+df_final['Original research'] = df_final["DOI"].isin(df_dois_in_review["doi"])
+
+df_final_in_review = df_final.where(df_final["Original research"] == True)
 logger.info(f"> Found {df_final_in_review.shape[0]} records in dataset")
 logger.info(
     f"> Writing {df_final_in_review.shape[0]} records to /tmp/output-used-in-review.csv\n"

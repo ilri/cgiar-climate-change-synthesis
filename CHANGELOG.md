@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add column with UN regions (based on countries)
 - Add column continents (based on countries)
 - Retrieve missing publishers from Crossref
+- Add column indicating original research (as opposed to review, synthesis, opinion, etc)
 
 ## [1.0.0] - 2024-12-09
 
