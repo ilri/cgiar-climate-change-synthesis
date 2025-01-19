@@ -567,7 +567,7 @@ logger.info(
 
 # Add a column for original research. These are DOIs that were included in the
 # review.
-df_final['Original research'] = df_final["DOI"].isin(df_dois_in_review["doi"])
+df_final["Original research"] = df_final["DOI"].isin(df_dois_in_review["doi"])
 
 df_final_in_review = df_final[df_final["DOI"].isin(df_dois_in_review["doi"])]
 logger.info(f"> Found {df_final_in_review.shape[0]} records in dataset")
