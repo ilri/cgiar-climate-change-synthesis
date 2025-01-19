@@ -307,7 +307,7 @@ logger.info(f"Starting with {total_number_records} records...\n")
 # Normalize DOIs so we can deduplicate them
 df_final["DOI"] = df_final["DOI"].apply(util.normalize_doi)
 
-logger.info(f"Removing duplicates...")
+logger.info("Removing duplicates...")
 
 # Remove duplicates using the DOI as the unique identifier. We need to use this
 # instead of the much simpler drop_duplicates() because blanks are considered
@@ -408,7 +408,7 @@ df_final["Usage rights"] = df_final["Usage rights"].str.replace(
     "Attribution 4.0", "CC-BY-4.0"
 )
 
-logger.info(f"> Looking up access rights on Unpaywall...")
+logger.info("> Looking up access rights on Unpaywall...")
 # Get access rights from Unpaywall because it's more reliable and standardized
 df_final["Unpaywall"] = df_final["DOI"].apply(util.get_access_rights)
 # Fill in missing access rights from repository metadata
@@ -430,7 +430,7 @@ df_final["Access rights"] = df_final["Access rights"].str.replace(
 # Write all DOIs to text for debugging
 df_final["DOI"].to_csv("/tmp/dois.txt", header=False, index=False)
 
-logger.info(f"> Checking for PDFs...")
+logger.info("> Checking for PDFs...")
 # After dropping items without DOIs, check if we have the PDF
 df_final["PDF"] = df_final["DOI"].apply(util.pdf_exists)
 
@@ -440,7 +440,7 @@ df_final["PDF"] = df_final["DOI"].apply(util.pdf_exists)
 df_final["Publication date"] = df_final.apply(util.get_publication_date, axis=1)
 
 # Retrieve missing abstracts from OpenAlex
-logger.info(f"> Retrieving missing abstracts from OpenAlex...")
+logger.info("> Retrieving missing abstracts from OpenAlex...")
 df_final["Abstract"] = df_final.apply(util.retrieve_abstract_openalex, axis=1)
 
 # Retrieve missing publishers from Crossref
@@ -501,19 +501,19 @@ df_final["Publisher"] = df_final["Publisher"].str.replace(
 
 # Filter abstracts to err on the side of caution regarding distribution of copy-
 # righted material.
-logger.info(f"> Filtering copyrighted abstracts...")
+logger.info("> Filtering copyrighted abstracts...")
 df_final["Abstract"] = df_final.apply(util.filter_abstracts, axis=1)
 
 # Normalize and de-duplicate countries
-logger.info(f"> Normalizing countries...")
+logger.info("> Normalizing countries...")
 df_final["Countries"] = df_final["Countries"].apply(util.normalize_countries)
 df_final["Countries"] = df_final["Countries"].apply(util.deduplicate_subjects)
 
-logger.info(f"> Adding regions...")
+logger.info("> Adding regions...")
 df_final["Regions"] = df_final["Countries"].apply(util.add_regions)
 df_final["Regions"] = df_final["Regions"].apply(util.deduplicate_subjects)
 
-logger.info(f"> Adding continents...\n")
+logger.info("> Adding continents...\n")
 df_final["Continents"] = df_final["Countries"].apply(util.add_continents)
 df_final["Continents"] = df_final["Continents"].apply(util.deduplicate_subjects)
 
@@ -556,7 +556,7 @@ df_final = df_final.filter(
     ]
 )
 
-logger.info(f"Preparing primary dataset...")
+logger.info("Preparing primary dataset...")
 
 # Import list of DOIs that were included in the review on Rayyan. This is the
 # primary dataset matching original CGIAR research on climate change.
@@ -579,7 +579,7 @@ df_final_in_review.to_csv("/tmp/output-used-in-review.csv", index=False)
 # Import list of DOIs that were included in the review on Rayyan, plus those
 # that were climate change related, but not original research (like reviews,
 # syntheses, opinion, etc).
-logger.info(f"Preparing 'combined' dataset...")
+logger.info("Preparing 'combined' dataset...")
 df_dois_combined_dataset = pd.read_csv("data/dois-for-combined-dataset.csv")
 logger.info(
     f"> Considering {df_dois_combined_dataset.shape[0]} records for combined dataset"
@@ -595,7 +595,7 @@ logger.info(
 )
 df_final_combined_dataset.to_csv("/tmp/output-combined.csv", index=False)
 
-logger.info(f"Preparing datasets for thematic areas...")
+logger.info("Preparing datasets for thematic areas...")
 
 df_dois_drought_dataset = pd.read_csv("data/dois-thematic-analysis-drought.csv")
 df_final_drought_dataset = df_final[
