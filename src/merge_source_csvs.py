@@ -10,20 +10,7 @@ import warnings
 
 import pandas as pd
 
-from util import (
-    add_continents,
-    add_regions,
-    deduplicate_subjects,
-    filter_abstracts,
-    get_access_rights,
-    get_license,
-    get_publication_date,
-    normalize_countries,
-    normalize_doi,
-    pdf_exists,
-    retrieve_abstract_openalex,
-    retrieve_publisher_crossref,
-)
+import util
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -318,7 +305,7 @@ total_number_records = df_final.shape[0]
 logger.info(f"Starting with {total_number_records} records...\n")
 
 # Normalize DOIs so we can deduplicate them
-df_final["DOI"] = df_final["DOI"].apply(normalize_doi)
+df_final["DOI"] = df_final["DOI"].apply(util.normalize_doi)
 
 logger.info(f"Removing duplicates...")
 
@@ -369,7 +356,7 @@ df_final["Subjects"] = df_final["Subjects"].str.replace(
 )
 
 # Deduplicate subjects since we've merged various keyword and subject fields
-df_final["Subjects"] = df_final["Subjects"].apply(deduplicate_subjects)
+df_final["Subjects"] = df_final["Subjects"].apply(util.deduplicate_subjects)
 
 logger.info(f"Removing preprints, books, drafts, etc...")
 
@@ -412,7 +399,7 @@ logger.info(f"Processing remaining {total_number_records} records...")
 
 logger.info(f"> Looking up licenses on Crossref...")
 # Get licenses from Crossref because it's more reliable and standardized
-df_final["Crossref"] = df_final["DOI"].apply(get_license)
+df_final["Crossref"] = df_final["DOI"].apply(util.get_license)
 # Fill in missing licenses from repository metadata
 df_final["Usage rights"] = df_final["Crossref"].combine_first(df_final["Usage rights"])
 df_final = df_final.drop("Crossref", axis="columns")
@@ -423,7 +410,7 @@ df_final["Usage rights"] = df_final["Usage rights"].str.replace(
 
 logger.info(f"> Looking up access rights on Unpaywall...")
 # Get access rights from Unpaywall because it's more reliable and standardized
-df_final["Unpaywall"] = df_final["DOI"].apply(get_access_rights)
+df_final["Unpaywall"] = df_final["DOI"].apply(util.get_access_rights)
 # Fill in missing access rights from repository metadata
 df_final["Access rights"] = df_final["Unpaywall"].combine_first(
     df_final["Access rights"]
@@ -445,20 +432,20 @@ df_final["DOI"].to_csv("/tmp/dois.txt", header=False, index=False)
 
 logger.info(f"> Checking for PDFs...")
 # After dropping items without DOIs, check if we have the PDF
-df_final["PDF"] = df_final["DOI"].apply(pdf_exists)
+df_final["PDF"] = df_final["DOI"].apply(util.pdf_exists)
 
 # Determine the publication date by getting the earlier of the issue date and
 # the online date. The `axis=1` means we want to apply this function on each
 # row instead of each column, so we can compare the item's dates.
-df_final["Publication date"] = df_final.apply(get_publication_date, axis=1)
+df_final["Publication date"] = df_final.apply(util.get_publication_date, axis=1)
 
 # Retrieve missing abstracts from OpenAlex
 logger.info(f"> Retrieving missing abstracts from OpenAlex...")
-df_final["Abstract"] = df_final.apply(retrieve_abstract_openalex, axis=1)
+df_final["Abstract"] = df_final.apply(util.retrieve_abstract_openalex, axis=1)
 
 # Retrieve missing publishers from Crossref
 logger.info(f"> Retrieving missing publishers from Crossref...")
-df_final["Publisher"] = df_final.apply(retrieve_publisher_crossref, axis=1)
+df_final["Publisher"] = df_final.apply(util.retrieve_publisher_crossref, axis=1)
 
 # Normalize some variants of big publishers, by count in our dataset, based on
 # some of the cases I noticed.
@@ -515,20 +502,20 @@ df_final["Publisher"] = df_final["Publisher"].str.replace(
 # Filter abstracts to err on the side of caution regarding distribution of copy-
 # righted material.
 logger.info(f"> Filtering copyrighted abstracts...")
-df_final["Abstract"] = df_final.apply(filter_abstracts, axis=1)
+df_final["Abstract"] = df_final.apply(util.filter_abstracts, axis=1)
 
 # Normalize and de-duplicate countries
 logger.info(f"> Normalizing countries...")
-df_final["Countries"] = df_final["Countries"].apply(normalize_countries)
-df_final["Countries"] = df_final["Countries"].apply(deduplicate_subjects)
+df_final["Countries"] = df_final["Countries"].apply(util.normalize_countries)
+df_final["Countries"] = df_final["Countries"].apply(util.deduplicate_subjects)
 
 logger.info(f"> Adding regions...")
-df_final["Regions"] = df_final["Countries"].apply(add_regions)
-df_final["Regions"] = df_final["Regions"].apply(deduplicate_subjects)
+df_final["Regions"] = df_final["Countries"].apply(util.add_regions)
+df_final["Regions"] = df_final["Regions"].apply(util.deduplicate_subjects)
 
 logger.info(f"> Adding continents...\n")
-df_final["Continents"] = df_final["Countries"].apply(add_continents)
-df_final["Continents"] = df_final["Continents"].apply(deduplicate_subjects)
+df_final["Continents"] = df_final["Countries"].apply(util.add_continents)
+df_final["Continents"] = df_final["Continents"].apply(util.deduplicate_subjects)
 
 # Use YYYY dates for Rayyan
 df_final["Publication date"] = df_final["Publication date"].str.slice(start=0, stop=4)
