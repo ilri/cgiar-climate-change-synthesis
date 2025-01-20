@@ -392,18 +392,18 @@ def normalize_countries(countries):
     coco_logger.setLevel(logging.CRITICAL)
 
     # Convert to common short names (using a Pandas Series is 4000x faster)
-    countries_standardized = cc.pandas_convert(
+    countries_normalized = cc.pandas_convert(
         series=pd.Series(countries.split("; ")), to="name_short"
     )
 
     # Reset log level
     coco_logger.setLevel(logger.level)
 
-    countries_standardized = [
-        country for country in countries_standardized if country != "not found"
+    countries_normalized = [
+        country for country in countries_normalized if country != "not found"
     ]
 
-    return "; ".join(countries_standardized)
+    return "; ".join(countries_normalized)
 
 
 # Filter our abstracts so we don't accidentally distribute copyrighted material.
