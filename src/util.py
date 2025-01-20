@@ -17,10 +17,10 @@ import sys
 from datetime import datetime, timedelta
 
 import country_converter as coco
-import requests
-import requests_cache
 import pandas as pd
 import pyalex
+import requests
+import requests_cache
 
 # Create a local logger instance for this module. We don't do any configuration
 # because this module might be used elsewhere that will have its own logging
