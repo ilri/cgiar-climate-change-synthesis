@@ -508,6 +508,10 @@ df_final["Author affiliations"] = df_final.apply(util.retrieve_affiliations_open
 logger.info("> Filtering copyrighted abstracts...")
 df_final["Abstract"] = df_final.apply(util.filter_abstracts, axis=1)
 
+# Attempt to extract missing countries from titles and abstracts
+logger.info("> Extracting missing countries...")
+df_final["Countries"] = df_final.apply(util.extract_missing_countries, axis=1)
+
 # Normalize and de-duplicate countries
 logger.info("> Normalizing countries...")
 df_final["Countries"] = df_final["Countries"].apply(util.normalize_countries)

@@ -35,6 +35,8 @@ requests_cache.install_cache(
 
 requests_cache.delete(expired=True)
 
+cc = coco.CountryConverter()
+
 
 def get_access_rights(doi: str):
     access_rights = pd.NA
@@ -591,3 +593,33 @@ def retrieve_affiliations_openalex(row: pd.Series) -> str:
                 affiliations.append(affiliation)
 
     return "; ".join(affiliations)
+
+
+def extract_missing_countries(row: pd.Series) -> str:
+    """
+    Attempt to extract missing countries from titles and abstracts.
+
+    Note: this is very naive and unoptimized.
+    """
+    if pd.notna(row["Countries"]):
+        return row["Countries"]
+
+    # Combine title and abstract for the search space
+    if pd.notna(row["Abstract"]):
+        search_space = row["Title"] + row["Abstract"]
+    else:
+        search_space = row["Title"]
+
+    countries = list()
+
+    # Try short names first
+    for country in cc.data.name_short.values:
+        if country in search_space and country not in countries:
+            countries.append(country)
+
+    # Then try official names
+    for country in cc.data.name_official.values:
+        if country in search_space and country not in countries:
+            countries.append(country)
+
+    return "; ".join(countries)
