@@ -561,3 +561,33 @@ def retrieve_publisher_crossref(row: pd.Series) -> str:
         return pd.NA
 
     return publisher
+
+
+def retrieve_affiliations_openalex(row: pd.Series) -> str:
+    """
+    Attempt to retrieve missing affiliations from OpenAlex.
+    """
+    if pd.notna(row["Author affiliations"]):
+        return row["Author affiliations"]
+
+    try:
+        pyalex.config.email = os.environ["EMAIL"]
+    except KeyError:
+        pass
+
+    try:
+        w = pyalex.Works()[row["DOI"]]
+    except requests.exceptions.HTTPError:
+        return pd.NA
+
+    if not w["authorships"]:
+        return pd.NA
+
+    affiliations = list()
+
+    for author in w["authorships"]:
+        for affiliation in author["raw_affiliation_strings"]:
+            if affiliation not in affiliations:
+                affiliations.append(affiliation)
+
+    return "; ".join(affiliations)

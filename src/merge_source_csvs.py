@@ -499,6 +499,10 @@ df_final["Publisher"] = df_final["Publisher"].str.replace(
     regex=True,
 )
 
+# Retrieve missing affiliations from OpenAlex
+logger.info("> Retrieving missing affiliations from OpenAlex...")
+df_final["Author affiliations"] = df_final.apply(util.retrieve_affiliations_openalex, axis=1)
+
 # Filter abstracts to err on the side of caution regarding distribution of copy-
 # righted material.
 logger.info("> Filtering copyrighted abstracts...")
