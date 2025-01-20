@@ -503,6 +503,11 @@ df_final["Publisher"] = df_final["Publisher"].str.replace(
 logger.info("> Retrieving missing affiliations from OpenAlex...")
 df_final["Author affiliations"] = df_final.apply(util.retrieve_affiliations_openalex, axis=1)
 
+# Normalize CGIAR centers from the mess of affiliations
+logger.info("> Normalizing CGIAR affiliations...")
+df_final["Author affiliations"] = df_final["Author affiliations"].apply(util.normalize_affiliations)
+df_final["Author affiliations"] = df_final["Author affiliations"].apply(util.deduplicate_subjects)
+
 # Filter abstracts to err on the side of caution regarding distribution of copy-
 # righted material.
 logger.info("> Filtering copyrighted abstracts...")

@@ -572,6 +572,8 @@ def retrieve_affiliations_openalex(row: pd.Series) -> str:
 
     for author in w["authorships"]:
         for affiliation in author["raw_affiliation_strings"]:
+            affiliation = clean_string(affiliation)
+
             if affiliation not in affiliations:
                 affiliations.append(affiliation)
 
@@ -606,3 +608,71 @@ def extract_missing_countries(row: pd.Series) -> str:
             countries.append(country)
 
     return "; ".join(countries)
+
+
+def normalize_affiliations(affiliations):
+    """
+    Try to normalize affiliations. For now this is a manual list of replacements
+    for CGIAR centers only.
+    """
+    if pd.isna(affiliations):
+        return pd.NA
+
+    affiliations_normalized = list()
+
+    for affiliation in affiliations.split('; '):
+        # Tease out CGIAR centers from the mess of affiliations
+        affiliation = re.sub(r'^Africa Rice Center.+','Africa Rice Center', affiliation)
+        affiliation = re.sub(r'^AfricaRice.+','Africa Rice Center', affiliation)
+
+        affiliation = re.sub(r'^Alliance of Bioversity International and.+','Alliance of Bioversity International and CIAT', affiliation)
+
+        affiliation = re.sub(r'^Bioversity International.+','Bioversity International', affiliation)
+
+        affiliation = re.sub(r'^Cent(er|re) for International Forestry Research.+','Center for International Forestry Research', affiliation)
+        affiliation = re.sub(r'^CIFOR.+','Center for International Forestry Research', affiliation)
+
+        affiliation = re.sub(r'^International Cent(er|re) for Agricultural Research in the Dry Areas.+','International Center for Agricultural Research in the Dry Areas', affiliation)
+        affiliation = re.sub(r'^ICARDA.+','International Center for Agricultural Research in the Dry Areas', affiliation)
+
+        affiliation = re.sub(r'^International Cent(er|re) for Tropical Agriculture.+','International Center for Tropical Agriculture', affiliation)
+        affiliation = re.sub(r'^Centro Internacional de Agricultura Tropical.+','International Center for Tropical Agriculture', affiliation)
+        affiliation = re.sub(r'^CIAT.+','International Center for Tropical Agriculture', affiliation)
+
+        affiliation = re.sub(r'^International Crops Research Institute for the Semi-Arid Tropics.+','International Crops Research Institute for the Semi-Arid Tropics', affiliation)
+        affiliation = re.sub(r'^ICRISAT.+','International Crops Research Institute for the Semi-Arid Tropics', affiliation)
+
+        affiliation = re.sub(r'^International Food Policy Research Institute.+','International Food Policy Research Institute', affiliation)
+        affiliation = re.sub(r'^IFPRI.+','International Food Policy Research Institute', affiliation)
+
+        affiliation = re.sub(r'^International Institute of Tropical Agriculture.+','International Institute of Tropical Agriculture', affiliation)
+        affiliation = re.sub(r'^IITA.+','International Institute of Tropical Agriculture', affiliation)
+
+        affiliation = re.sub(r'^International Livestock Research Institute.+','International Livestock Research Institute', affiliation)
+        affiliation = re.sub(r'^International Livestock Research Centre.+','International Livestock Research Institute', affiliation)
+        affiliation = re.sub(r'^ILRI.+','International Livestock Research Institute', affiliation)
+
+        affiliation = re.sub(r'^International Maize and Wheat Improvement Cent(er|re).+','International Maize and Wheat Improvement Center', affiliation)
+        affiliation = re.sub(r'^Centro Internacional de Mejoramiento de Ma(i|í)z y Trigo.+','International Maize and Wheat Improvement Center', affiliation)
+        affiliation = re.sub(r'^CIMMYT.+','International Maize and Wheat Improvement Center', affiliation)
+
+        affiliation = re.sub(r'^International Potato Cent(er|re).+','International Potato Center', affiliation)
+        affiliation = re.sub(r'^Centro Internacional de la Papa.+','International Potato Center', affiliation)
+        affiliation = re.sub(r'^CIP.+','International Potato Center', affiliation)
+
+        affiliation = re.sub(r'^International Rice Research Institute.+','International Rice Research Institute', affiliation)
+        affiliation = re.sub(r'^IRRI.+','International Rice Research Institute', affiliation)
+
+        affiliation = re.sub(r'^International Water Management Institute.+','International Water Management Institute', affiliation)
+        affiliation = re.sub(r'^IWMI.+','International Water Management Institute', affiliation)
+
+        affiliation = re.sub(r'^World Agroforestry Cent(er|re).+','World Agroforestry', affiliation)
+        affiliation = re.sub(r'^International Cent(er|re) for Research in Agroforestry.+','World Agroforestry', affiliation)
+        affiliation = re.sub(r'^ICRAF.+','World Agroforestry', affiliation)
+
+        affiliation = re.sub(r'^WorldFish.+','WorldFish', affiliation)
+
+        if affiliation not in affiliations_normalized:
+            affiliations_normalized.append(affiliation)
+
+    return "; ".join(affiliations_normalized)
