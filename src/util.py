@@ -383,9 +383,6 @@ def normalize_doi(doi):
 def normalize_countries(countries):
     """
     Try to normalize country names to common short names.
-
-    Note: this is slower than country_converter's built-in pandas_convert(), but
-    I can't figure out how to deal with our series mixing strings and lists.
     """
     if pd.isna(countries):
         return pd.NA
@@ -394,23 +391,19 @@ def normalize_countries(countries):
     coco_logger = coco.logging.getLogger()
     coco_logger.setLevel(logging.CRITICAL)
 
-    # Convert to common short names
-    countries_standardized = coco.convert(names=countries.split("; "), to="name_short")
+    # Convert to common short names (using a Pandas Series is 4000x faster)
+    countries_standardized = cc.pandas_convert(
+        series=pd.Series(countries.split("; ")), to="name_short"
+    )
 
     # Reset log level
     coco_logger.setLevel(logger.level)
 
-    if isinstance(countries_standardized, str):
-        if countries_standardized == "not found":
-            return pd.NA
-        else:
-            return countries_standardized
-    else:
-        countries_standardized = [
-            country for country in countries_standardized if country != "not found"
-        ]
+    countries_standardized = [
+        country for country in countries_standardized if country != "not found"
+    ]
 
-        return "; ".join(countries_standardized)
+    return "; ".join(countries_standardized)
 
 
 # Filter our abstracts so we don't accidentally distribute copyrighted material.
@@ -465,20 +458,14 @@ def add_regions(countries):
     coco_logger.setLevel(logging.CRITICAL)
 
     # Convert countries to UN regions
-    regions = coco.convert(names=countries.split("; "), to="UNRegion")
+    regions = cc.pandas_convert(series=pd.Series(countries.split("; ")), to="UNRegion")
 
     # Reset log level
     coco_logger.setLevel(logger.level)
 
-    if isinstance(regions, str):
-        if regions == "not found":
-            return pd.NA
-        else:
-            return regions
-    else:
-        regions = [region for region in regions if region != "not found"]
+    regions = [region for region in regions if region != "not found"]
 
-        return "; ".join(regions)
+    return "; ".join(regions)
 
 
 def add_continents(countries):
@@ -493,20 +480,16 @@ def add_continents(countries):
     coco_logger.setLevel(logging.CRITICAL)
 
     # Convert to countries to continents
-    continents = coco.convert(names=countries.split("; "), to="Continent_7")
+    continents = cc.pandas_convert(
+        series=pd.Series(countries.split("; ")), to="Continent_7"
+    )
 
     # Reset log level
     coco_logger.setLevel(logger.level)
 
-    if isinstance(continents, str):
-        if continents == "not found":
-            return pd.NA
-        else:
-            return continents
-    else:
-        continents = [continent for continent in continents if continent != "not found"]
+    continents = [continent for continent in continents if continent != "not found"]
 
-        return "; ".join(continents)
+    return "; ".join(continents)
 
 
 def retrieve_abstract_openalex(row: pd.Series) -> str:
