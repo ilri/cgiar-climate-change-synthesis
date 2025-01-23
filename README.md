@@ -4,11 +4,11 @@ Code used to generate datasets for the 2024 synthesis of CGIAR work on climate c
 
 Items matching the inclusion criteria were retrieved from eight CGIAR institutional repositories. This Python-based extract, transform, and load (ETL) pipeline filtered, merged, and normalized the metadata to ensure consistent use of date formats, multi-value separators, and identifiers. Naive deduplication was performed using titles and DOIs. Items identified to have been included erroneously due to incorrect repository metadata (mislabeled preprints, non-English, etc) were excluded.
 
-We used Crossref and Unpaywall to fill in gaps for missing metadata such as usage (license) and access rights because this information can be valuable to researchers. All other metadata was used as-is from the respective repositories. Bibliographic metadata in the CSV output is oriented towards use with the [Rayyan platform](https://www.rayyan.ai/) for systematic literature review.
+We used Crossref, Unpaywall, and OpenAlex to fill in gaps for missing metadata such as usage (license) and access rights, affiliations, and publishers because this information can be valuable to researchers. Minor normalization was performed on affiliations, countries, and publishers, but all other metadata was used as-is from the respective repositories. Bibliographic metadata in the CSV output is oriented towards use with the [Rayyan platform](https://www.rayyan.ai/) for systematic literature review.
 
 See:
 
-- Orth, Alan; Bosire, Caroline K.; Rabago, Laura; Vaidya, Shrijana; Rajbhandari, Sitashma; Pradhan, Prajal; Mukherji, Aditi, 2024, "A Comprehensive Database of CGIAR Climate-Related Journal Articles (2012–2023)", https://hdl.handle.net/20.500.11766.1/FK2/Z98CZO, MELDATA, V1
+> Orth, Alan; Bosire, Caroline K.; Rabago, Laura; Vaidya, Shrijana; Rajbhandari, Sitashma; Pradhan, Prajal; Mukherji, Aditi, 2024, "A Comprehensive Database of CGIAR Climate-Related Journal Articles (2012–2023)", https://hdl.handle.net/20.500.11766.1/FK2/Z98CZO, MELDATA, V4
 
 
 ## Methodology
