@@ -1,4 +1,4 @@
-# CGIAR Climate Change Synthesis Scripts [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14329330.svg)](https://doi.org/10.5281/zenodo.14329330)
+# CGIAR Climate Change Synthesis Scripts [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14329329.svg)](https://doi.org/10.5281/zenodo.14329329)
 
 Code used to generate datasets for the 2024 synthesis of CGIAR work on climate change.
 
