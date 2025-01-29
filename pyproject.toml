@@ -39,7 +39,7 @@ homepage = "https://github.com/ilri/cgiar-climate-change-synthesis"
 dev-dependencies = [
     "ipython~=8.18.1",
     "isort~=5.13.2",
-    "black~=24.8.0",
+    "black~=25.1.0",
 ]
 
 [tool.isort]
