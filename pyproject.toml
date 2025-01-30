@@ -35,8 +35,8 @@ classifiers = [
 repository = "https://github.com/ilri/cgiar-climate-change-synthesis"
 homepage = "https://github.com/ilri/cgiar-climate-change-synthesis"
 
-[tool.uv]
-dev-dependencies = [
+[dependency-groups]
+dev = [
     "ipython~=8.18.1",
     "isort~=5.13.2",
     "black~=24.8.0",
