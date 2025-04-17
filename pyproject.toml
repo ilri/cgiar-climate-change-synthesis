@@ -1,6 +1,6 @@
 [project]
 name = "cgiar-climate-change-synthesis"
-version = "0.0.1"
+version = "1.0.2"
 description = "Code to generate the data used for the 2024 CGIAR Climate Change Synthesis dataset."
 authors = [
     { name = "Alan Orth", email = "git@mjanja.mozmail.com" }

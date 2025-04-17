@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] - 2025-04-17
+
+- Updated release corresponding to v8 of the dataset:
+
+> Orth, Alan; Bosire, Caroline K.; Rabago, Laura; Vaidya, Shrijana; Rajbhandari, Sitashma; Pradhan, Prajal; Mukherji, Aditi, 2024, "A Comprehensive Database of CGIAR Climate-Related Journal Articles (2012–2023)", https://hdl.handle.net/20.500.11766.1/FK2/Z98CZO, MELDATA, V8
+
+### Changed
+
+- Revise list of journal articles based on subsequent review
+  - Total for dataset of original research articles: 2850→2813
+    - Remove 17 with study areas in the global North
+    - Remove 16 found to not be climate change or agri-food systems related
+    - Remove 4 found to review, opinion, perspective, etc
+  - Total for "combined" dataset (includes above, minus those that were not climate change or agri-food systems related): 3466→3450
+    - Remove 16 found to not be climate change or agri-food systems related
+- Remove "Original research" column for combined dataset because we can only determine that a journal article *was* original research (ie, included in the main review), not whether it *wasn't* (the combined dataset includes reviews, opinions, etc, as well as studies focusing on the global North)
+
+### Updated
+
+- Python dependencies
+
 ## [1.0.1] - 2025-01-22
 
 - Updated release corresponding to v4 of the dataset:
