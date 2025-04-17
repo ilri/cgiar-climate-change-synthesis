@@ -604,6 +604,12 @@ logger.info(
     f"> Considering {df_dois_combined_dataset.shape[0]} records for combined dataset"
 )
 
+# Remove "Original research" column because only those DOIs included in the
+# review are original research. The ones here were review/perpective/etc, but
+# could have also been about the global North and I don't have a way to distin-
+# guish them.
+df_final = df_final.drop(columns="Original research")
+
 df_final_combined_dataset = df_final[
     df_final["DOI"].isin(df_dois_combined_dataset["doi"])
 ]
