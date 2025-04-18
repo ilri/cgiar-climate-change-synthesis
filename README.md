@@ -10,6 +10,7 @@ See:
 
 > Orth, Alan; Bosire, Caroline K.; Rabago, Laura; Vaidya, Shrijana; Rajbhandari, Sitashma; Pradhan, Prajal; Mukherji, Aditi, 2024, "A Comprehensive Database of CGIAR Climate-Related Journal Articles (2012–2023)", https://hdl.handle.net/20.500.11766.1/FK2/Z98CZO, MELDATA, V8
 
+For a history of changes to this dataset see [CHANGELOG.md](CHANGELOG.md).
 
 ## Methodology
 
