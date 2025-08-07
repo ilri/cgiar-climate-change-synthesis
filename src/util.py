@@ -625,7 +625,7 @@ def normalize_affiliations(affiliations):
         affiliation = affiliation.strip("();.[§¶*†")
 
         affiliation = re.sub(
-            r"^Africa Rice Center.*", "Africa Rice Center", affiliation
+            r"^Africa Rice Center.+", "Africa Rice Center", affiliation
         )
         affiliation = re.sub(r"^AfricaRice.*", "Africa Rice Center", affiliation)
 
