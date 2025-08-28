@@ -12,7 +12,7 @@ requires-python = ">=3.10"
 dependencies = [
     "csvkit~=2.1",
     "packaging>=24.1",
-    "pandas[feather,performance]~=2.2",
+    "pandas[feather,performance]~=2.3",
     "requests-cache~=1.2.1",
     "tqdm~=4.67",
     "country-converter~=1.3",
