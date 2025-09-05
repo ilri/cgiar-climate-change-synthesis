@@ -304,8 +304,24 @@ total_number_records = df_final.shape[0]
 
 logger.info(f"Starting with {total_number_records} records...\n")
 
-# Normalize DOIs so we can deduplicate them
+# Normalize DOIs so we can deduplicate them (the side effect here is that we
+# prefix non-DOI strings like other URLs with "https://doi.org/" and end up
+# excluding those later because they are not DOIs, which is correct, but a bit
+# messy).
 df_final["DOI"] = df_final["DOI"].apply(util.normalize_doi)
+
+logger.info("Removing records with no DOI...")
+# Write a record of items missing DOIs
+df_final_missing_dois = df_final[
+    ~df_final["DOI"].str.startswith("https://doi.org/10.", na=False)
+]
+logger.info(
+    f"> Writing {df_final_missing_dois.shape[0]} records to /tmp/output-missing-dois.csv\n"
+)
+df_final_missing_dois.to_csv("/tmp/output-missing-dois.csv", index=False)
+
+# Extract only items with DOIs, as per the inclusion criteria of the review
+df_final = df_final[df_final["DOI"].str.startswith("https://doi.org/10.", na=False)]
 
 logger.info("Removing duplicates...")
 
@@ -381,18 +397,6 @@ removed = total_number_records - df_final.shape[0]
 logger.info(
     f"> Removed {removed} URLs (out of {df_urls_to_remove.shape[0]} considered)\n"
 )
-
-# Write a record of items missing DOIs
-df_final_missing_dois = df_final[
-    ~df_final["DOI"].str.startswith("https://doi.org/10.", na=False)
-]
-logger.info(
-    f"Writing {df_final_missing_dois.shape[0]} records to /tmp/output-missing-dois.csv\n"
-)
-df_final_missing_dois.to_csv("/tmp/output-missing-dois.csv", index=False)
-
-# Extract only items with DOIs, as per the inclusion criteria of the review
-df_final = df_final[df_final["DOI"].str.startswith("https://doi.org/10.", na=False)]
 
 total_number_records = df_final.shape[0]
 logger.info(f"Processing remaining {total_number_records} records...")
