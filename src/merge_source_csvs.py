@@ -325,11 +325,8 @@ df_final = df_final[df_final["DOI"].str.match(r"^https://doi.org/10\.\d{4,9}/.+"
 
 logger.info("Removing duplicates...")
 
-# Remove duplicates using the DOI as the unique identifier. We need to use this
-# instead of the much simpler drop_duplicates() because blanks are considered
-# duplicates, which means we drop records that don't have DOIs!
-# See: https://stackoverflow.com/questions/50154835/drop-duplicates-but-ignore-nulls
-df_final = df_final[(~df_final["DOI"].duplicated()) | df_final["DOI"].isna()]
+# Remove duplicates using the DOI as the unique identifier.
+df_final = df_final.drop_duplicates(subset=["DOI"])
 
 # Update count of removed records
 removed = total_number_records - df_final.shape[0]
