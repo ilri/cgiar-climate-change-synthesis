@@ -302,13 +302,16 @@ df_final = pd.concat(
 # Check how many rows we have total before removing any records
 total_number_records = df_final.shape[0]
 
-logger.info(f"Starting with {total_number_records} records...\n")
+logger.info(f"Starting with {total_number_records} records...")
 
 # Normalize DOIs so we can deduplicate them (the side effect here is that we
 # prefix non-DOI strings like other URLs with "https://doi.org/" and end up
 # excluding those later because they are not DOIs, which is correct, but a bit
 # messy).
 df_final["DOI"] = df_final["DOI"].apply(util.normalize_doi)
+
+logger.info(f"> Writing {total_number_records} records to /tmp/all.csv\n")
+df_final.to_csv("/tmp/all.csv", index=False)
 
 logger.info("Removing records with no DOI...")
 # Write a record of items missing DOIs
