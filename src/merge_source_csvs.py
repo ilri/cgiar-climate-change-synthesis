@@ -281,7 +281,7 @@ df_irri = df_irri.rename(
     }
 )
 
-logger.info("Merging sources...")
+logger.info("Merging sources...\n")
 
 # Concatenate the data frames
 # See: https://stackoverflow.com/a/48052579
