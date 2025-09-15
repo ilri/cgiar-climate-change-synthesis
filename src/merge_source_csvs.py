@@ -313,7 +313,7 @@ df_final["DOI"] = df_final["DOI"].apply(util.normalize_doi)
 logger.info("Removing records with no DOI...")
 # Write a record of items missing DOIs
 df_final_missing_dois = df_final[
-    ~df_final["DOI"].str.startswith("https://doi.org/10.", na=False)
+    ~df_final["DOI"].str.match(r"^https://doi.org/10\.\d{4,9}/.+", na=False)
 ]
 logger.info(
     f"> Writing {df_final_missing_dois.shape[0]} records to /tmp/output-missing-dois.csv\n"
@@ -321,7 +321,7 @@ logger.info(
 df_final_missing_dois.to_csv("/tmp/output-missing-dois.csv", index=False)
 
 # Extract only items with DOIs, as per the inclusion criteria of the review
-df_final = df_final[df_final["DOI"].str.startswith("https://doi.org/10.", na=False)]
+df_final = df_final[df_final["DOI"].str.match(r"^https://doi.org/10\.\d{4,9}/.+", na=False)]
 
 logger.info("Removing duplicates...")
 
