@@ -332,7 +332,7 @@ logger.info("Removing duplicates...")
 df_final = df_final.drop_duplicates(subset=["DOI"])
 
 # Update count of removed records
-removed = total_number_records - df_final.shape[0]
+removed = total_number_records - df_final_missing_dois.shape[0] - df_final.shape[0]
 logger.info(f"> Removed {removed} duplicate DOIs")
 
 # Check how many rows we have total before deduplicating titles
