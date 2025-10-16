@@ -258,7 +258,7 @@ df_irri["Authors"] = df_irri["Authors"].str.replace(
 )
 
 # Add spaces after semicolons where they are missing
-df_irri["Authors"] = df_irri["Authors"].str.replace(r";[^ ]", "; ", regex=True)
+df_irri["Authors"] = df_irri["Authors"].str.replace(r";([^ ])", r"; \1", regex=True)
 
 # Replace "backcrossing.;climatic change." → "backcrossing; climatic change"
 df_irri["subjects"] = df_irri["subjects"].str.replace(r"\.?;", "; ", regex=True)
