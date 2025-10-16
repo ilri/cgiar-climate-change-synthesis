@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Re-work processing to exclude records with no DOIs before other operations
 
+### Fixed
+
+- Logic error in formatting IRRI author names
+
 ## [1.0.2] - 2025-04-17
 
 - Updated release corresponding to v8 of the dataset:
