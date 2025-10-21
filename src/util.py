@@ -612,8 +612,8 @@ def extract_missing_countries(row: pd.Series) -> str:
 
 def normalize_affiliations(affiliations):
     """
-    Try to normalize affiliations. For now this is a manual list of replacements
-    for CGIAR centers only.
+    Try to normalize affiliations. For now this is only a few cases of acronyms
+    and easy replacements for CGIAR centers.
     """
     if pd.isna(affiliations):
         return pd.NA
@@ -622,7 +622,16 @@ def normalize_affiliations(affiliations):
 
     for affiliation in affiliations.split("; "):
         # Strip some nonsense at the beginning and end
-        affiliation = affiliation.strip("();.[§¶*†")
+        affiliation = affiliation.strip(";.[§¶*†")
+
+        # Strip some acronymns at the end, for example:
+        # Nordic Genetic Resources Center (NordGen)
+        # Orange Agricultural Institute(Orange)
+        affiliation = re.sub(r"\s*\(\w+\)$", "", affiliation)
+
+        # Strip some acronymns at the end, for example:
+        # Global Crop Diversity Trust - GCDT
+        affiliation = re.sub(r"\s+-\s+[A-Z]+$", "", affiliation)
 
         affiliation = re.sub(
             r"^Africa Rice Center.+", "Africa Rice Center", affiliation
