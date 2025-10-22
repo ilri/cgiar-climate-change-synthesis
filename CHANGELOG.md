@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
 - Re-work processing to exclude records with no DOIs before other operations
 - Improved normalization of author affiliation by removing some acronyms
 
