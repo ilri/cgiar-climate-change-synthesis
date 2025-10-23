@@ -45,7 +45,7 @@ echo "Updating WorldFish"
 
 ./src/harvest_dspace.py -r https://digitalarchive.worldfishcenter.org -f dc.title,dc.creator,cg.contributor.affiliation,dc.description.abstract,dc.date.issued,dc.subject,cg.subject.agrovoc,dc.identifier.uri,dc.identifier.doi,cg.identifier.status,dc.rights,cg.coverage.country,cg.coverage.region,dc.language,dc.source,dc.identifier.issn,dc.publisher,cg.contributor.funder,dc.type -o /tmp/worldfish.csv > /dev/null
 
-csvgrep -c dc.date.issued -r '^(201[2-9]|202[0-3])' -a /tmp/worldfish.csv \
+csvgrep -c dc.date.issued -r '^(201[2-9]|202[0-3])' /tmp/worldfish.csv \
     | csvgrep -c dc.type -m 'Journal Article' \
     | csvgrep -c dc.title,dc.subject,cg.subject.agrovoc,dc.description.abstract -r '[Cc]limate [Cc]hange' -a \
     | csvgrep -c dc.language -r '[Ee]n' \
@@ -59,7 +59,7 @@ echo "Updating CIFOR"
 csvgrep -c dc.date.issued -r '^(201[2-9]|202[0-3])' /tmp/cifor.csv \
     | csvgrep -c dc.type -m 'Journal Article' \
     | csvgrep -c dc.title,dc.subject,cg.subject.cifor,dc.description.abstract -r '[Cc]limate [Cc]hange' -a \
-    | csvgrep -c dc.language.iso -m 'en' -a \
+    | csvgrep -c dc.language.iso -m 'en' \
     | tee data/cifor-filtered.csv \
     | csvstat --count
 
@@ -86,7 +86,7 @@ echo "Updating IFPRI"
 
 ./src/harvest_ifpri.py
 
-csvgrep -c "Publication date" -r '^(201[2-9]|202[0-3])' -a /tmp/ifpri.csv \
+csvgrep -c "Publication date" -r '^(201[2-9]|202[0-3])' /tmp/ifpri.csv \
     | csvgrep -c Type -m 'Journal article' \
     | csvgrep -c Title,Subjects,Abstract -r '[Cc]limate [Cc]hange' -a \
     | csvgrep -c Language -m English \
