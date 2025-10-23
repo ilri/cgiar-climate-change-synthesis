@@ -382,7 +382,7 @@ df_final["Subjects"] = df_final["Subjects"].str.replace(
 # Deduplicate subjects since we've merged various keyword and subject fields
 df_final["Subjects"] = df_final["Subjects"].apply(util.deduplicate_subjects)
 
-logger.info(f"Removing preprints, books, drafts, etc...")
+logger.info("Removing preprints, books, drafts, etc...")
 
 # Filter out some DOIs that we exclude from the set. For example preprints,
 # book chapters, etc that have been miscataloged in a CGIAR repository).
@@ -456,7 +456,7 @@ logger.info("> Retrieving missing abstracts from OpenAlex...")
 df_final["Abstract"] = df_final.apply(util.retrieve_abstract_openalex, axis=1)
 
 # Retrieve missing publishers from Crossref
-logger.info(f"> Retrieving missing publishers from Crossref...")
+logger.info("> Retrieving missing publishers from Crossref...")
 df_final["Publisher"] = df_final.apply(util.retrieve_publisher_crossref, axis=1)
 
 # Normalize some variants of big publishers, by count in our dataset, based on
