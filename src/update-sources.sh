@@ -31,7 +31,7 @@ echo "Updating CGSpace"
 # script did some pre-processing.
 csvgrep -c "Title,Subjects,Abstract" -r '[Cc]limate [Cc]hange' -a /tmp/cgspace.csv \
     | tee data/cgspace-filtered.csv \
-    | xsv count
+    | csvstat --count
 
 echo "Updating MELSpace"
 
@@ -39,7 +39,7 @@ echo "Updating MELSpace"
 
 csvgrep -c "Title,Subjects,Abstract" -r '[Cc]limate [Cc]hange' -a /tmp/melspace.csv \
     | tee data/melspace-filtered.csv \
-    | xsv count
+    | csvstat --count
 
 echo "Updating WorldFish"
 
@@ -50,7 +50,7 @@ csvgrep -c dc.date.issued -r '^(201[2-9]|202[0-3])' -a /tmp/worldfish.csv \
     | csvgrep -c dc.title,dc.subject,cg.subject.agrovoc,dc.description.abstract -r '[Cc]limate [Cc]hange' -a \
     | csvgrep -c dc.language -r '[Ee]n' \
     | tee data/worldfish-filtered.csv \
-    | xsv count
+    | csvstat --count
 
 echo "Updating CIFOR"
 
@@ -61,7 +61,7 @@ csvgrep -c dc.date.issued -r '^(201[2-9]|202[0-3])' /tmp/cifor.csv \
     | csvgrep -c dc.title,dc.subject,cg.subject.cifor,dc.description.abstract -r '[Cc]limate [Cc]hange' -a \
     | csvgrep -c dc.language.iso -m 'en' -a \
     | tee data/cifor-filtered.csv \
-    | xsv count
+    | csvstat --count
 
 echo "Updating CIMMYT"
 
@@ -71,7 +71,7 @@ echo "Updating CIMMYT"
 # script did some pre-processing.
 csvgrep -c "Title,Subjects,Abstract" -r '[Cc]limate [Cc]hange' -a /tmp/cimmyt.csv \
     | tee data/cimmyt-filtered.csv \
-    | xsv count
+    | csvstat --count
 
 echo "Updating ICRISAT"
 
@@ -91,6 +91,6 @@ csvgrep -c "Publication date" -r '^(201[2-9]|202[0-3])' -a /tmp/ifpri.csv \
     | csvgrep -c Title,Subjects,Abstract -r '[Cc]limate [Cc]hange' -a \
     | csvgrep -c Language -m English \
     | tee data/ifpri-filtered.csv \
-    | xsv count
+    | csvstat --count
 
 # vim: set expandtab:ts=4:sw=4:bs=2
