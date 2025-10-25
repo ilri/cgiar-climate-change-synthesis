@@ -20,9 +20,9 @@ agate-sql==0.7.2 \
     --hash=sha256:9b1b30284a573fd416759437273dcc5c81022bdf2facb24b4aa029a62afd53b0 \
     --hash=sha256:be1cb9a99b3e4ec7f6106278dfb7b534be9629c8a983abb168c3effacc79dd10
     # via csvkit
-attrs==25.3.0 \
-    --hash=sha256:427318ce031701fea540783410126f03899a97ffc6f61596ad581ac2e40e3bc3 \
-    --hash=sha256:75d7cefc7fb576747b2c81b4442d4d4a1ce0900973527c011d1030fd3bf4af1b
+attrs==25.4.0 \
+    --hash=sha256:16d5969b87f0859ef33a48b35d55ac1be6e42ae49d5e853b597db70c35c57e11 \
+    --hash=sha256:adcf7e2a1fb3b36ac48d97835bb6d8ade15b8dcce26aba8bf1d14847b57a3373
     # via
     #   cattrs
     #   requests-cache
