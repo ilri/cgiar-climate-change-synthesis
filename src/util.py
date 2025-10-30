@@ -202,7 +202,7 @@ def pdf_exists(doi: str):
     # Strip URI prefix
     doi = doi.replace("https://doi.org/", "")
 
-    doi_pdf_file = f'{doi.replace("/", "-")}.pdf'
+    doi_pdf_file = f"{doi.replace('/', '-')}.pdf"
     pdf_path = f"data/pdf/{doi_pdf_file}"
 
     # Check if we have the PDF for this DOI locally
