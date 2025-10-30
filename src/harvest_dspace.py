@@ -248,10 +248,6 @@ def main(args):
         iterate_items(dspace_root, dspace_rest_api)
 
 
-def signal_handler(signal, frame):
-    sys.exit(1)
-
-
 if __name__ == "__main__":
     args = parse_arguments()
 
