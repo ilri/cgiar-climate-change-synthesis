@@ -132,7 +132,7 @@ def get_license(doi: str):
                 license = license.rstrip("/")
 
                 # Special handling for IGO corner case
-                if not "igo" in license:
+                if "igo" not in license:
                     # Split on slash and get last two matches from the end
                     license, version = license.split("/")[-2:]
                     # Put it all together
