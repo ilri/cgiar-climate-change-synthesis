@@ -256,7 +256,7 @@ def detect_dspace_version(dspace_root: str) -> str:
 
         return dspace_version
     else:
-        logger.error(f"Cannot detect DSpace version")
+        logger.error("Cannot detect DSpace version")
 
         sys.exit(1)
 

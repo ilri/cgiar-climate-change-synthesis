@@ -409,7 +409,7 @@ logger.info(
 total_number_records = df_final.shape[0]
 logger.info(f"Processing remaining {total_number_records} records...")
 
-logger.info(f"> Looking up licenses on Crossref...")
+logger.info("> Looking up licenses on Crossref...")
 # Get licenses from Crossref because it's more reliable and standardized
 df_final["Crossref"] = df_final["DOI"].apply(util.get_license)
 # Fill in missing licenses from repository metadata
