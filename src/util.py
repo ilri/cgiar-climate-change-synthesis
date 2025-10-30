@@ -8,11 +8,9 @@
 # Various helper functions for Python scripts.
 #
 
-import gzip
 import logging
 import os
 import re
-import shutil
 import sys
 from datetime import datetime, timedelta
 
