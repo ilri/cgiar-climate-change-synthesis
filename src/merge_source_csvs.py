@@ -16,9 +16,6 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 logging.basicConfig(format="%(message)s")
 
-# Enable copy on write
-pd.options.mode.copy_on_write = True
-
 # Read all source CSVs into data frames. Use categorical dtype for some fields
 # that have a limited number of values. Use the pyarrow dtype backend because
 # pyarrow dtypes use significantly less memory than pandas default dtypes.
