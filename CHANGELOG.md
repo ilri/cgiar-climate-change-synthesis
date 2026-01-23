@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Updated
+
+- Python dependencies
+  - Use Pandas 3.0.0
+
 ### Changed
 
 - Re-work processing to exclude records with no DOIs before other operations
