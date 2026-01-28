@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Re-work processing to exclude records with no DOIs before other operations
 - Improved normalization of author affiliation by removing some acronyms
+- Revise list of journal articles based on subsequent review in Sysrev
+  - Total for dataset of original research articles: 2813→2652
 
 ### Fixed
 
