@@ -598,7 +598,7 @@ logger.info("Preparing primary dataset...")
 # primary dataset matching original CGIAR research on climate change.
 df_dois_in_review = pd.read_csv("data/included-in-review.csv")
 logger.info(
-    f"> Considering {df_dois_in_review.shape[0]} records included in Rayyan screening"
+    f"> Considering {df_dois_in_review.shape[0]} records included in screening"
 )
 
 # Add a column for original research. These are DOIs that were included in the
