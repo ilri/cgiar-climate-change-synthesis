@@ -33,7 +33,7 @@ from util import detect_dspace_version
 logger = logging.getLogger(__name__)
 
 session = CachedSession(
-    "harvest-cache", expire_after=timedelta(days=30), allowable_codes=(200, 404)
+    "harvest-cache", expire_after=timedelta(days=30), allowable_codes=[200]
 )
 
 # prune old cache entries

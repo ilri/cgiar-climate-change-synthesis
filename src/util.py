@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 # We must use the monkey-patching method of requests_cache instead of the more
 # clean CachedSession because pyalex can't use the session manager.
 requests_cache.install_cache(
-    "util-cache", expire_after=timedelta(days=30), allowable_codes=(200, 404)
+    "util-cache", expire_after=timedelta(days=30), allowable_codes=[200]
 )
 
 requests_cache.delete(expired=True)
