@@ -19,6 +19,7 @@ import pandas as pd
 import pyalex
 import requests
 import requests_cache
+from bs4 import BeautifulSoup
 
 # Create a local logger instance for this module. We don't do any configuration
 # because this module might be used elsewhere that will have its own logging
@@ -785,3 +786,35 @@ def normalize_affiliations(affiliations):
             affiliations_normalized.append(affiliation)
 
     return "; ".join(affiliations_normalized)
+
+
+def generate_citation(doi: str):
+    if pd.isna(doi):
+        return pd.NA
+
+    url = "https://citation.doi.org/format"
+    request_params = {"doi": doi, "style": "apa", "lang": "en-US"}
+
+    # Opportunistically provide an email address from the environment so we can
+    # add a meaningful contact address to the requests.
+    try:
+        request_params.update({"mailto": os.environ["EMAIL"]})
+    except KeyError:
+        pass
+
+    response = requests.get(url, params=request_params)
+
+    if not response.ok:
+        return pd.NA
+
+    # Some bibliographic metadata has HTML tags and newlines. Using BeautifulSoup
+    # feels overkill but in the interest of time I'll compromise. Note that we
+    # need to use strip=True to strip whitespace and newlines inside the string
+    # and strip() on the resulting string to strip the trailing newline.
+    #
+    # See (HTML and newlines): https://citation.doi.org/format?doi=10.1002/ps.6478&style=apa&lang=en-US
+    # See (HTML): https://citation.doi.org/format?doi=10.1002/eap.2545&style=apa&lang=en-US
+    # See (newlines still a problem): https://citation.doi.org/format?doi=10.1088/1748-9326/aa80f1&style=apa&lang=en-US
+    soup = BeautifulSoup(response.text, "html.parser")
+
+    return soup.get_text(strip=True).strip()

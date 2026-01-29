@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- Citation column
+  - These are in generated in APA format from https://citation.doi.org on a best-effort basis, as not all DOIs are registered
+
 ### Updated
 
 - Python dependencies

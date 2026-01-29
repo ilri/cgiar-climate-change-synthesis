@@ -17,6 +17,7 @@ dependencies = [
     "tqdm~=4.67",
     "country-converter~=1.3",
     "pyalex~=0.18",
+    "beautifulsoup4~=4.14.3",
 ]
 
 # See: https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#classifiers

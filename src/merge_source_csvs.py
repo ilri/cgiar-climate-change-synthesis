@@ -541,9 +541,16 @@ logger.info("> Adding regions...")
 df_final["Regions"] = df_final["Countries"].apply(util.add_regions)
 df_final["Regions"] = df_final["Regions"].apply(util.deduplicate_subjects)
 
-logger.info("> Adding continents...\n")
+logger.info("> Adding continents...")
 df_final["Continents"] = df_final["Countries"].apply(util.add_continents)
 df_final["Continents"] = df_final["Continents"].apply(util.deduplicate_subjects)
+
+# TODO: figure out how to reset the root logger level after normalize_countries,
+# which causes tons of debug logging from requests-cache in generate_citation.
+logger.setLevel(logging.INFO)
+
+logger.info("> Generating citations...\n")
+df_final["Citation"] = df_final["DOI"].apply(util.generate_citation)
 
 # Use YYYY dates for Rayyan
 df_final["Publication date"] = df_final["Publication date"].str.slice(start=0, stop=4)
@@ -566,6 +573,7 @@ df_final = df_final.filter(
         "Funders",
         "DOI",
         "Year",
+        "Citation",
         "Journal",
         "ISSN",
         "Volume",
