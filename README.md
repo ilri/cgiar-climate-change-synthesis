@@ -43,7 +43,7 @@ CGIAR institutional repositories used in this dataset (sorted by total number of
 
 ## Requirements
 
-- Python >= 3.10
+- Python >= 3.11
 - UNIX-like operating system
 
 
