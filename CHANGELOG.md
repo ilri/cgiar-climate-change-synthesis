@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Re-work processing to exclude records with no DOIs before other operations
 - Improved normalization of author affiliation by removing some acronyms
+- Improved fetching of missing author affiliations from OpenAlex, using the normalized display name instead of raw strings (which were *very* raw, verbose, and contained characters like newlines and others that cause CSV parsing issues in Excel)
 - Revise list of journal articles based on subsequent review in Sysrev
   - Total for dataset of original research articles: 2813→2652
 

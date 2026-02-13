@@ -570,8 +570,10 @@ def retrieve_affiliations_openalex(row: pd.Series) -> str:
     affiliations = list()
 
     for author in w["authorships"]:
-        for affiliation in author["raw_affiliation_strings"]:
-            affiliation = clean_string(affiliation)
+        # Use institutions instead of raw_affiliation_strings because they are
+        # very raw, verbose, and even contain characters that break Excel CSVs.
+        for affiliation in author["institutions"]:
+            affiliation = clean_string(affiliation["display_name"])
 
             if affiliation not in affiliations:
                 affiliations.append(affiliation)
